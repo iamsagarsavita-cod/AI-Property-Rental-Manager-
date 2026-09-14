@@ -10,30 +10,32 @@ const authentication = async (req, res, next) => {
 
     token = token.split(" ")[1];
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
-
-    if (decodedToken) {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
+      if (err) {
+        return res.status(401).json({ msg: "Invalid or Expired Token" });
+      }
       req.userId = decodedToken.userId;
       req.role = decodedToken.role;
-    } else {
-      return res.status(401).json({ msg: "Invalid Or Expired Token" });
-    }
-
-    next();
+      next();
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Internal Server Error" });
   }
 };
 
-const ownerAuth = async (req, res, next) => {
+const authorization = (...allowedRoles) => {
+  return async (req, res, next) => {
     try {
-        if(req.role !== "owner"){
-            return res.status(403).json({msg:"Access Denied, Only Owner Can Accesss"})
-        }
+      if (!allowedRoles.includes(req.role)) {
+        return res.status(403).json({ msg: "Access Denied" });
+      }
+      next();
     } catch (error) {
-        
+      console.log(error);
+      return res.status(500).json({ msg: "Internal Server Error" });
     }
+  };
 };
 
-module.exports = { authentication, ownerAuth };
+module.exports = { authentication, authorization };

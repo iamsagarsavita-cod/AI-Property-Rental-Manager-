@@ -270,4 +270,62 @@ const deleteProfile = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, getMyProfile, updateProfile, deleteProfile };
+//Get All Users(Admin)
+const getAllUsers = async (req, res) => {
+  try {
+    let { role } = req.query;
+    let filter = {};
+
+    if (role !== undefined) {
+      if (role !== "user" && role !== "owner" && role !== "admin") {
+        return res.status(400).json({ msg: "Invalid Roles" });
+      }
+      filter.role = role;
+    }
+
+    let users = await UserModel.find(filter).select("-password");
+
+    if (users.length === 0) {
+      return res.status(404).json({ msg: "No Users Found" });
+    }
+
+    return res.status(200).json({ msg: "Users Fetched Successfully", users });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
+
+//Delete Any Users(Admin)
+const deleteAnyUser = async (req, res) => {
+  try {
+    let userId = req.params.id;
+    if (!isValidObjectId(userId)) {
+      return res.status(400).json({ msg: "Invalid User Id" });
+    }
+
+    let user = await UserModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: "User Not Found" });
+    }
+
+    if (user.role === "admin") {
+      return res.status(403).json({ msg: "Admin Cannot be Deleted" });
+    }
+    await UserModel.findByIdAndDelete(userId);
+    return res.status(200).json({ msg: "User Deleted Successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
+
+module.exports = {
+  signup,
+  login,
+  getMyProfile,
+  updateProfile,
+  deleteProfile,
+  getAllUsers,
+  deleteAnyUser,
+};
