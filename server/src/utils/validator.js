@@ -9,6 +9,7 @@ const isValid = (input) => {
 };
 
 const isValidFullName = (input) => /^[A-Za-z ]*$/.test(input);
+const isValidCategoryName = (input) => /^[A-Za-z ]*$/.test(input);
 
 const isValidEmail = (input) =>
   /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(input);
@@ -28,6 +29,7 @@ const isValidObjectId = (objectId) => mongoose.Types.ObjectId.isValid(objectId);
 module.exports = {
   isValid,
   isValidFullName,
+  isValidCategoryName,
   isValidEmail,
   isValidPhone,
   isValidPassword,

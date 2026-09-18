@@ -8,7 +8,7 @@ const connectDB = require("./config/db");
 
 // Routes
 const userRoute = require("./routes/userRoute");
-
+const categoryRoute = require("./routes/categoryRoute");
 
 const app = express();
 connectDB();
@@ -16,6 +16,7 @@ connectDB();
 app.use(express.json());
 
 app.use("/users", userRoute);
+app.use("/categories", categoryRoute);
 
 app.get("/", (req, res) => {
   res.json({ msg: "Hello From Property Rental Manager" });
