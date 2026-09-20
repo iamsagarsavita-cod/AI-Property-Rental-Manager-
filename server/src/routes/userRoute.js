@@ -9,12 +9,19 @@ const {
   getAllUsers,
   deleteAnyUser,
 } = require("../controllers/userController");
-const { authentication, authorization } = require("../middlewares/auth");
 
-router.post("/signup", signup);
+const { authentication, authorization } = require("../middlewares/auth");
+const upload = require("../config/multer");
+
+router.post("/signup", upload.single("profileImage"), signup);
 router.post("/login", login);
 router.get("/my-profile", authentication, getMyProfile);
-router.put("/update", authentication, updateProfile);
+router.put(
+  "/update",
+  authentication,
+  upload.single("profileImage"),
+  updateProfile,
+);
 router.delete("/delete", authentication, deleteProfile);
 
 // Admin Routes

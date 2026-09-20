@@ -17,12 +17,12 @@ const signup = async (req, res) => {
     let userData = req.body;
 
     if (!userData || Object.keys(userData).length === 0) {
-      return res.status(400).json({ msg: "Bad Request ! No Data provided" });
+      return res.status(400).json({ msg: "Bad Request ! No Data Provided" });
     }
 
     let { fullName, email, password, phone, bio, role } = userData;
 
-    //Full Name Validation
+    // Full Name Validation
     if (!isValid(fullName)) {
       return res.status(400).json({ msg: "Full Name is Required" });
     }
@@ -45,7 +45,7 @@ const signup = async (req, res) => {
       return res.status(400).json({ msg: "Email Already Exists" });
     }
 
-    //PassWord Validation
+    // Password Validation
     if (!isValid(password)) {
       return res.status(400).json({ msg: "Password is Required" });
     }
@@ -54,7 +54,7 @@ const signup = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Password" });
     }
 
-    //Phone Number Validation
+    // Phone Number Validation
     if (!isValid(phone)) {
       return res.status(400).json({ msg: "Phone Number is Required" });
     }
@@ -62,32 +62,39 @@ const signup = async (req, res) => {
     if (!isValidPhone(phone)) {
       return res.status(400).json({ msg: "Invalid Phone Number" });
     }
-    let duplicatephone = await UserModel.findOne({ phone });
-    if (duplicatephone) {
+
+    let duplicatePhone = await UserModel.findOne({ phone });
+    if (duplicatePhone) {
       return res.status(400).json({ msg: "Phone Number Already Exists" });
     }
 
-    //Bio Validation
+    // Bio Validation
     if (bio !== undefined) {
-      if (bio.length < 15) {
+      if (bio.length < 15 && bio.length > 200) {
         return res
           .status(400)
-          .json({ msg: "Bio Cannot be less than 15 characters." });
+          .json({ msg: "Bio Cannot be less than 15 Characters." });
       }
     }
 
-    //Role Validation
+    // Role Validation
     if (role !== undefined) {
       if (role !== "user" && role !== "owner") {
         return res.status(400).json({ msg: "Invalid Role" });
       }
     }
 
-    //Password Hashing
-    const hashedpassword = await bcrypt.hash(password, 10);
-    userData.password = hashedpassword;
+    // Password Hashing
+    const hashedPassword = await bcrypt.hash(password, 10);
+    userData.password = hashedPassword;
+
+    // Profile Image
+    if (req.file) {
+      userData.profileImage = req.file.filename;
+    }
 
     const user = await UserModel.create(userData);
+
     return res.status(201).json({ msg: "Signup Successfull", user });
   } catch (error) {
     console.log(error);
@@ -238,6 +245,11 @@ const updateProfile = async (req, res) => {
           .status(400)
           .json({ msg: "Bio Cannot be less than 15 Characters." });
       }
+    }
+
+    // Profile Image
+    if (req.file) {
+      userData.profileImage = req.file.filename;
     }
 
     let updatedUserProfile = await UserModel.findByIdAndUpdate(

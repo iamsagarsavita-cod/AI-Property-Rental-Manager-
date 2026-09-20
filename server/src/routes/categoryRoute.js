@@ -23,6 +23,13 @@ router.put(
   updateCategory,
 );
 
+router.delete(
+  "/delete/:id",
+  authentication,
+  authorization("admin"),
+  deleteCategory,
+);
+
 // Public Routes
 router.get("/all-categories", authentication, getAllCategory);
 router.get("/get-category/:id", authentication, getCategoryById);
