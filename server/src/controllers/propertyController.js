@@ -136,6 +136,52 @@ const updateProperty = async (req, res) => {
         .status(400)
         .json({ msg: "Bad Request ! Enter Data to Update" });
     }
+    let property = await PropertyModel.findById(propertyId);
+
+    if (!property) {
+      return res.status(404).json({ msg: "property Not Found" });
+    }
+
+    if (property.ownerId.toString() != req.userId.toString()) {
+      return res
+        .status(403)
+        .json({ msg: "You can only update your own property" });
+    }
+
+    const {
+      title,
+      description,
+      categoryId,
+      location,
+      price,
+      bedRooms,
+      bathRooms,
+      area,
+      status,
+    } = req.body;
+
+    // Update only provided fields
+    if (title !== undefined) property.title = title;
+    if (description !== undefined) property.description = description;
+    if (categoryId !== undefined) property.categoryId = categoryId;
+    if (location !== undefined) property.location = location;
+    if (price !== undefined) property.price = price;
+    if (bedRooms !== undefined) property.bedRooms = bedRooms;
+    if (bathRooms !== undefined) property.bathRooms = bathRooms;
+    if (area !== undefined) property.area = area;
+    if (status !== undefined) property.status = status;
+
+    // New images
+    if (req.files && req.files.length > 0) {
+      property.images = req.files.map((file) => file.filename);
+    }
+
+    await property.save();
+
+    return res.status(200).json({
+      msg: "Property Updated Successfully",
+      property,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Internal Server Error" });

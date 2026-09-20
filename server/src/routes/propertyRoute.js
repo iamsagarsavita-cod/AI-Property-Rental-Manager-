@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const { addProperty } = require("../controllers/propertyController");
+const { addProperty, updateProperty } = require("../controllers/propertyController");
 
 const { authentication, authorization } = require("../middlewares/auth");
 const upload = require("../config/multer");
@@ -12,6 +12,14 @@ router.post(
   authorization("owner"),
   upload.array("images", 5),
   addProperty,
+);
+
+router.put(
+  "/update-property/:id",
+  authentication,
+  authorization("owner"),
+  upload.array("images", 5),
+  updateProperty,
 );
 
 module.exports = router;
