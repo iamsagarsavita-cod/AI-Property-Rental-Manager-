@@ -1,6 +1,5 @@
 const PropertyModel = require("../models/PropertyModel");
 const CategoryModel = require("../models/categoryModel");
-const UserModel = require("../models/userModel");
 
 const { isValid, isValidObjectId } = require("../utils/validator");
 
@@ -191,6 +190,25 @@ const updateProperty = async (req, res) => {
 // Delete Property (Owner)
 const deleteProperty = async (req, res) => {
   try {
+    let propertyId = req.params.id;
+    if (!isValidObjectId(propertyId)) {
+      return res.status(400).json({ msg: "Invalid Property Id" });
+    }
+    let property = await PropertyModel.findById(propertyId);
+
+    if (!property) {
+      return res.status(404).json({ msg: "Property Not Found" });
+    }
+
+    if (property.ownerId.toString() !== req.userId.toString()) {
+      return res
+        .status(403)
+        .json({ msg: "You can only delete your own property." });
+    }
+
+    await PropertyModel.findByIdAndDelete(propertyId);
+    return res.status(200).json({ msg: "Property Data Deleted Successfully" });
+    
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Internal Server Error" });
@@ -200,15 +218,161 @@ const deleteProperty = async (req, res) => {
 // Get My Properties
 const getMyProperties = async (req, res) => {
   try {
+    let properties = await PropertyModel.find({ ownerId: req.userId })
+      .populate("categoryId")
+      .sort({ createdAt: -1 });
+
+    if (properties.length === 0) {
+      return res.status(404).json({ msg: "No Properties Found" });
+    }
+
+    return res.status(200).json({
+      msg: "Properties Data Fetched Successfully",
+      totalNoOfProperty: properties.length,
+      properties,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Internal Server Error" });
   }
 };
 
+// Get All Properties (Search, Filter and Pagination)
+const getAllProperty = async (req, res) => {
+  try {
+    let {
+      search,
+      categoryId,
+      location,
+      minPrice,
+      maxPrice,
+      status,
+      page = 1,
+      limit = 5,
+    } = req.query;
+
+    page = Number(page);
+    limit = Number(limit);
+
+    if (page < 1) {
+      return res.status(400).json({ msg: "Page must be greater than 0" });
+    }
+
+    if (limit < 1 || limit > 20) {
+      return res.status(400).json({ msg: "Limit must be between 1 and 20" });
+    }
+
+    let filter = {};
+
+    // Search By Title or Location
+    if (search) {
+      filter.$or = [
+        { title: { $regex: search, $options: "i" } },
+        { location: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    // Filter By Category
+    if (categoryId) {
+      if (!isValidObjectId(categoryId)) {
+        return res.status(400).json({ msg: "Invalid Category Id" });
+      }
+      filter.categoryId = categoryId;
+    }
+
+    // Filter By Location
+    if (location) {
+      filter.location = { $regex: location, $options: "i" };
+    }
+
+    // Filter By Price
+    if (minPrice || maxPrice) {
+      filter.price = {};
+
+      if (minPrice) {
+        if (isNaN(minPrice) || Number(minPrice) < 0) {
+          return res.status(400).json({ msg: "Invalid Min Price" });
+        }
+        filter.price.$gte = Number(minPrice);
+      }
+
+      if (maxPrice) {
+        if (isNaN(maxPrice) || Number(maxPrice) < 0) {
+          return res.status(400).json({ msg: "Invalid Max Price" });
+        }
+        filter.price.$lte = Number(maxPrice);
+      }
+    }
+
+    // Filter By Status
+    if (status) {
+      if (!["available", "rented", "inactive"].includes(status)) {
+        return res.status(400).json({ msg: "Invalid Status" });
+      }
+      filter.status = status;
+    }
+
+    // Total Properties
+    let totalProperties = await PropertyModel.countDocuments(filter);
+
+    // Skip
+    let skip = (page - 1) * limit;
+
+    let properties = await PropertyModel.find(filter)
+      .populate("categoryId")
+      .populate("ownerId", "-password")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    if (properties.length === 0) {
+      return res.status(404).json({ msg: "No Properties Found" });
+    }
+
+    let totalPages = Math.ceil(totalProperties / limit);
+
+    return res.status(200).json({
+      msg: "Properties Fetched Successfully",
+      page,
+      limit,
+      totalPages,
+      totalProperties,
+      properties,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
+
+// Get Property By Id
+const getPropertyById = async (req, res) => {
+  try {
+    let propertyId = req.params.id;
+    if (!isValidObjectId(propertyId)) {
+      return res.status(400).json({ msg: "Invalid Property Id" });
+    }
+
+    let property = await PropertyModel.findById(propertyId)
+      .populate("categoryId")
+      .populate("ownerId", "-password");
+
+    if (!property) {
+      return res.status(404).json({ msg: "Property Not Found" });
+    }
+    return res.status(200).json({ msg: "Property Data Fetched", property });
+  } catch (error) {
+    console.
+    log(error);
+    return res.status(500).json({ msg: "Internal Server Error" });
+  }
+};
 module.exports = {
   addProperty,
   updateProperty,
   deleteProperty,
   getMyProperties,
+  getAllProperty,
+  getPropertyById,
+
 };
