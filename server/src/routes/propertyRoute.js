@@ -1,6 +1,13 @@
 const router = require("express").Router();
 
-const { addProperty, updateProperty, deleteProperty, getAllProperty, getMyProperties, getPropertyById } = require("../controllers/propertyController");
+const {
+  addProperty,
+  updateProperty,
+  deleteProperty,
+  getMyProperties,
+  getAllProperty,
+  getPropertyById,
+} = require("../controllers/propertyController");
 
 const { authentication, authorization } = require("../middlewares/auth");
 const upload = require("../config/multer");
@@ -15,7 +22,7 @@ router.post(
 );
 
 router.put(
-  "/update-property/:id",
+  "/update/:id",
   authentication,
   authorization("owner"),
   upload.array("images", 5),
