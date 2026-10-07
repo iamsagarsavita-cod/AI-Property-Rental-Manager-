@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   FiUser,
   FiMail,
@@ -9,8 +9,100 @@ import {
   FiHome,
   FiKey,
 } from "react-icons/fi";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import api from "../../services/api";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    password: "",
+    bio: "",
+    role: "user",
+  });
+
+  const [profileImage, setProfileImage] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const changeHandler = (e) => {
+    let { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const changeImageHandler = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Profile Image must be less than 2MB");
+      return;
+    }
+
+    let allowedFiles = ["image/png", "image/jpg", "image/jpeg", "image/webp"];
+    if (!allowedFiles.includes(file.type)) {
+      toast.error("Only JPG, JPEG, PNG and WEBP images are allowed");
+      return;
+    }
+
+    setProfileImage(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  const selectRole = (role) => {
+    setFormData((prev) => ({ ...prev, role }));
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const data = new FormData();
+
+      data.append("fullName", formData.fullName);
+      data.append("email", formData.email);
+      data.append("phone", formData.phone);
+      data.append("password", formData.password);
+      data.append("bio", formData.bio);
+      data.append("role", formData.role);
+
+      if (profileImage) {
+        data.append("profileImage", profileImage);
+      }
+
+      let response = await api.post("/users/signup", data);
+
+      toast.success(response?.data?.msg || "Signup Successfull");
+
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        password: "",
+        bio: "",
+        role: "user",
+      });
+      setProfileImage(null);
+      setPreview(null);
+
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.msg || "Signup Failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="grid min-h-screen lg:grid-cols-2">
@@ -80,7 +172,7 @@ const Register = () => {
               </p>
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={submitHandler}>
               {/* Role Selection */}
               <div>
                 <label className="mb-2 block text-sm font-medium text-slate-300">
@@ -90,7 +182,12 @@ const Register = () => {
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
-                    className="flex items-center justify-center gap-2 rounded-2xl border border-indigo-500 bg-indigo-500/10 py-3.5 text-sm font-medium text-indigo-300 transition"
+                    onClick={() => selectRole("user")}
+                    className={`flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-sm font-medium transition ${
+                      formData.role === "user"
+                        ? "border-indigo-500 bg-indigo-500/10 text-indigo-300"
+                        : "border-slate-800 bg-slate-900/70 text-slate-400 hover:border-slate-700"
+                    }`}
                   >
                     <FiHome size={16} />
                     Rent a Property
@@ -98,7 +195,12 @@ const Register = () => {
 
                   <button
                     type="button"
-                    className="flex items-center justify-center gap-2 rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 text-sm font-medium text-slate-400 transition hover:border-slate-700"
+                    onClick={() => selectRole("owner")}
+                    className={`flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-sm font-medium transition ${
+                      formData.role === "user"
+                        ? "border-indigo-500 bg-indigo-500/10 text-indigo-300"
+                        : "border-slate-800 bg-slate-900/70 text-slate-400 hover:border-slate-700"
+                    }`}
                   >
                     <FiKey size={16} />
                     List Properties
@@ -109,7 +211,15 @@ const Register = () => {
               {/* Profile Image */}
               <div className="flex items-center gap-4">
                 <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-dashed border-slate-700 bg-slate-900 text-slate-500">
-                  <FiCamera size={22} />
+                  {preview ? (
+                    <img
+                      src={preview}
+                      alt="Profile preview"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <FiCamera size={22} />
+                  )}
                 </div>
 
                 <div>
@@ -118,6 +228,7 @@ const Register = () => {
                     type="file"
                     accept="image/jpeg,image/jpg,image/png,image/webp"
                     className="hidden"
+                    onChange={changeImageHandler}
                   />
 
                   <label
@@ -146,6 +257,9 @@ const Register = () => {
                     type="text"
                     placeholder="Enter your full name"
                     className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    value={formData.fullName}
+                    name="fullName"
+                    onChange={changeHandler}
                   />
                 </div>
               </div>
@@ -163,6 +277,9 @@ const Register = () => {
                     type="email"
                     placeholder="you@example.com"
                     className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    value={formData.email}
+                    name="email"
+                    onChange={changeHandler}
                   />
                 </div>
               </div>
@@ -180,6 +297,9 @@ const Register = () => {
                     type="tel"
                     placeholder="Enter phone number"
                     className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    value={formData.phone}
+                    name="phone"
+                    onChange={changeHandler}
                   />
                 </div>
               </div>
@@ -197,6 +317,9 @@ const Register = () => {
                     type="password"
                     placeholder="Create a strong password"
                     className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    value={formData.password}
+                    name="password"
+                    onChange={changeHandler}
                   />
                 </div>
               </div>
@@ -212,6 +335,9 @@ const Register = () => {
                   rows="3"
                   placeholder="Tell us a little about yourself..."
                   className="w-full resize-none rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3.5 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                  value={formData.bio}
+                  name="bio"
+                  onChange={changeHandler}
                 />
               </div>
 
