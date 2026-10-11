@@ -8,10 +8,18 @@ import OwnerRoute from "./routes/OwnerRoute";
 import AdminRoute from "./routes/AdminRoute";
 
 import UserDashboard from "./pages/user/Dashboard";
+import MyRequests from "./pages/user/MyRequests";
+import Properties from "./pages/user/Properties";
+import PropertyDetails from "./pages/user/PropertyDetails";
+
 import OwnerDashboard from "./pages/owner/OwnerDashboard";
+import MyProperties from "./pages/owner/MyProperties";
+import PropertyForm from "./pages/owner/PropertyForm";
+import Requests from "./pages/owner/Requests";
+
 import AdminDashboard from "./pages/admin/AdminDashboard";
 
-import MyRequests from "./pages/user/MyRequests";
+import Profile from "./pages/shared/Profile";
 
 const App = () => {
   return (
@@ -25,16 +33,31 @@ const App = () => {
           {/* User Routes */}
           <Route element={<UserRoute />}>
             <Route path="/user/dashboard" element={<UserDashboard />} />
+            <Route path="/user/requests" element={<MyRequests />} />
+            <Route path="/user/properties" element={<Properties />} />
+            <Route path="/user/properties/:id" element={<PropertyDetails />} />
+
+            <Route path="/user/profile" element={<Profile />} />
           </Route>
 
           {/* Owner Routes */}
           <Route element={<OwnerRoute />}>
             <Route path="/owner-dashboard" element={<OwnerDashboard />} />
+            <Route path="/owner/properties" element={<MyProperties />} />
+            <Route path="/owner/properties/add" element={<PropertyForm />} />
+            <Route
+              path="/owner/properties/edit/:id"
+              element={<PropertyForm />}
+            />
+            <Route path="/owner/requests" element={<Requests />} />
+
+            <Route path="/owner/profile" element={<Profile />} />
           </Route>
 
           {/* Admin Routes */}
           <Route element={<AdminRoute />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/profile" element={<Profile />} />
           </Route>
         </Route>
       </Routes>

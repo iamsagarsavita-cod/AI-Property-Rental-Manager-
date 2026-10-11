@@ -23,13 +23,13 @@ const navLinksByRole = {
     { name: "My Requests", path: "/user/requests", icon: FiFileText },
   ],
   owner: [
-    { name: "Dashboard", path: "/owner/dashboard", icon: FiHome },
+    { name: "Dashboard", path: "/owner-dashboard", icon: FiHome },
     { name: "My Properties", path: "/owner/properties", icon: FiGrid },
     { name: "Add Property", path: "/owner/properties/add", icon: FiPlusSquare },
     { name: "Requests", path: "/owner/requests", icon: FiInbox },
   ],
   admin: [
-    { name: "Dashboard", path: "/admin/dashboard", icon: FiHome },
+    { name: "Dashboard", path: "/admin-dashboard", icon: FiHome },
     { name: "Users", path: "/admin/users", icon: FiUsers },
     { name: "Categories", path: "/admin/categories", icon: FiGrid },
     { name: "Properties", path: "/admin/properties", icon: FiHome },
