@@ -48,6 +48,7 @@ const addProperty = async (req, res) => {
     if (!isValidObjectId(categoryId)) {
       return res.status(400).json({ msg: "Invalid Category Id" });
     }
+    
 
     let categoryExists = await CategoryModel.findById(categoryId);
     if (!categoryExists) {
@@ -118,6 +119,7 @@ const addProperty = async (req, res) => {
     return res.status(500).json({ msg: "Internal Server Error" });
   }
 };
+
 
 // Update Property (Owner)
 const updateProperty = async (req, res) => {
