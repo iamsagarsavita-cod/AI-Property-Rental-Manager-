@@ -8,10 +8,10 @@ const {
   isValidEmail,
   isValidPassword,
   isValidPhone,
-  isValidObjectId
+  isValidObjectId,
 } = require("../utils/validator");
 
-//Signup
+// Signup
 const signup = async (req, res) => {
   try {
     let userData = req.body;
@@ -102,11 +102,11 @@ const signup = async (req, res) => {
   }
 };
 
-//Login
+// Login
 const login = async (req, res) => {
   try {
     let userData = req.body;
-    if (!userData || Object.keys(userData).length == 0) {
+    if (!userData || Object.keys(userData).length === 0) {
       return res.status(400).json({ msg: "Bad Request ! No Data Provided" });
     }
 
@@ -125,6 +125,11 @@ const login = async (req, res) => {
       return res.status(404).json({ msg: "User Not Found" });
     }
 
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({ mag: "Incorrect Password" });
+    }
+
     let token = jwt.sign(
       {
         userId: user._id,
@@ -133,6 +138,7 @@ const login = async (req, res) => {
       process.env.JWT_SECRET_KEY,
       { expiresIn: "3d" },
     );
+
     return res.status(200).json({
       msg: "Login Successfull",
       token,
@@ -283,7 +289,7 @@ const deleteProfile = async (req, res) => {
   }
 };
 
-//Get All Users(Admin)
+// Get All Users (Admin)
 const getAllUsers = async (req, res) => {
   try {
     let { role } = req.query;
@@ -309,7 +315,7 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-//Delete Any Users(Admin)
+// Delete Any Users (Admin)
 const deleteAnyUser = async (req, res) => {
   try {
     let userId = req.params.id;

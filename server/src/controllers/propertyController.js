@@ -48,7 +48,6 @@ const addProperty = async (req, res) => {
     if (!isValidObjectId(categoryId)) {
       return res.status(400).json({ msg: "Invalid Category Id" });
     }
-    
 
     let categoryExists = await CategoryModel.findById(categoryId);
     if (!categoryExists) {
@@ -120,7 +119,6 @@ const addProperty = async (req, res) => {
   }
 };
 
-
 // Update Property (Owner)
 const updateProperty = async (req, res) => {
   try {
@@ -130,6 +128,18 @@ const updateProperty = async (req, res) => {
       return res.status(400).json({ msg: "Invalid Property Id" });
     }
 
+    let property = await PropertyModel.findById(propertyId);
+
+    if (!property) {
+      return res.status(404).json({ msg: "Property Not Found" });
+    }
+
+    if (property.ownerId.toString() !== req.userId.toString()) {
+      return res
+        .status(403)
+        .json({ msg: "You can only update your own property." });
+    }
+
     let propertyData = req.body;
 
     if (!propertyData || Object.keys(propertyData).length === 0) {
@@ -137,19 +147,8 @@ const updateProperty = async (req, res) => {
         .status(400)
         .json({ msg: "Bad Request ! Enter Data to Update" });
     }
-    let property = await PropertyModel.findById(propertyId);
 
-    if (!property) {
-      return res.status(404).json({ msg: "property Not Found" });
-    }
-
-    if (property.ownerId.toString() != req.userId.toString()) {
-      return res
-        .status(403)
-        .json({ msg: "You can only update your own property" });
-    }
-
-    const {
+    let {
       title,
       description,
       categoryId,
@@ -159,30 +158,107 @@ const updateProperty = async (req, res) => {
       bathRooms,
       area,
       status,
-    } = req.body;
+    } = propertyData;
 
-    // Update only provided fields
-    if (title !== undefined) property.title = title;
-    if (description !== undefined) property.description = description;
-    if (categoryId !== undefined) property.categoryId = categoryId;
-    if (location !== undefined) property.location = location;
-    if (price !== undefined) property.price = price;
-    if (bedRooms !== undefined) property.bedRooms = bedRooms;
-    if (bathRooms !== undefined) property.bathRooms = bathRooms;
-    if (area !== undefined) property.area = area;
-    if (status !== undefined) property.status = status;
-
-    // New images
-    if (req.files && req.files.length > 0) {
-      property.images = req.files.map((file) => file.filename);
+    if (title !== undefined) {
+      if (!isValid(title)) {
+        return res.status(400).json({ msg: "Property Title is Required" });
+      }
     }
 
-    await property.save();
+    if (description !== undefined) {
+      if (!isValid(description)) {
+        return res.status(400).json({ msg: "Description is Required" });
+      }
 
-    return res.status(200).json({
-      msg: "Property Updated Successfully",
-      property,
-    });
+      if (description.length < 10 || description.length > 1000) {
+        return res.status(400).json({
+          msg: "Description should be less than 1000 Character and greater than 10 Character.",
+        });
+      }
+    }
+
+    if (categoryId !== undefined) {
+      if (!isValid(categoryId)) {
+        return res.status(400).json({ msg: "Category Id is Required" });
+      }
+
+      if (!isValidObjectId(categoryId)) {
+        return res.status(400).json({ msg: "Invalid Category Id" });
+      }
+      let categoryExists = await CategoryModel.findById(categoryId);
+      if (!categoryExists) {
+        return res.status(404).json({ msg: "Category Not Found" });
+      }
+    }
+
+    if (location !== undefined) {
+      if (!isValid(location)) {
+        return res.status(400).json({ msg: "Location is Required" });
+      }
+    }
+
+    if (price !== undefined) {
+      if (!isValid(price)) {
+        return res.status(400).json({ msg: "Price is Required" });
+      }
+
+      if (Number(price) <= 0) {
+        return res.status(400).json({ msg: "Invalid Price" });
+      }
+    }
+
+    if (bedRooms !== undefined) {
+      if (!isValid(bedRooms)) {
+        return res.status(400).json({ msg: "Bedrooms is Required" });
+      }
+
+      if (Number(bedRooms) <= 0) {
+        return res.status(400).json({ msg: "Invalid Bedrooms" });
+      }
+    }
+
+    if (bathRooms !== undefined) {
+      if (!isValid(bathRooms)) {
+        return res.status(400).json({ msg: "Bathrooms is Required" });
+      }
+
+      if (Number(bathRooms) <= 0) {
+        return res.status(400).json({ msg: "Invalid Bathrooms" });
+      }
+    }
+
+    if (area !== undefined) {
+      if (!isValid(area)) {
+        return res.status(400).json({ msg: "Area is Required" });
+      }
+
+      if (Number(area) <= 0) {
+        return res.status(400).json({ msg: "Invalid Area" });
+      }
+    }
+
+    if (status !== undefined) {
+      if (!["available", "rented", "inactive"].includes(status)) {
+        return res.status(400).json({ msg: "Invalid Status" });
+      }
+    }
+
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map((file) => file.filename);
+
+      propertyData.images = [...(property.images || []), ...newImages];
+    }
+
+    let updatedPropertyData = await PropertyModel.findByIdAndUpdate(
+      propertyId,
+      propertyData,
+      { new: true },
+    ).populate("categoryId");
+
+    return res
+      .status(200)
+      .json({ msg: "Property Data Updated Successfully", updatedPropertyData });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Internal Server Error" });
@@ -210,7 +286,6 @@ const deleteProperty = async (req, res) => {
 
     await PropertyModel.findByIdAndDelete(propertyId);
     return res.status(200).json({ msg: "Property Data Deleted Successfully" });
-    
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Internal Server Error" });
@@ -364,11 +439,11 @@ const getPropertyById = async (req, res) => {
     }
     return res.status(200).json({ msg: "Property Data Fetched", property });
   } catch (error) {
-    console.
-    log(error);
+    console.log(error);
     return res.status(500).json({ msg: "Internal Server Error" });
   }
 };
+
 module.exports = {
   addProperty,
   updateProperty,
@@ -376,5 +451,4 @@ module.exports = {
   getMyProperties,
   getAllProperty,
   getPropertyById,
-
 };
