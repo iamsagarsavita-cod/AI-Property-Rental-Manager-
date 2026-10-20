@@ -1,4 +1,11 @@
-import { FiMapPin, FiHome, FiUser, FiPhone, FiMail } from "react-icons/fi";
+import {
+  FiMapPin,
+  FiHome,
+  FiUser,
+  FiPhone,
+  FiMail,
+  FiZap,
+} from "react-icons/fi";
 
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -14,6 +21,9 @@ const PropertyDetails = () => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
 
+  const [summary, setSummary] = useState("");
+  const [summarizing, setSummarizing] = useState(false);
+
   useEffect(() => {
     fetchProperty();
   }, [id]);
@@ -22,13 +32,23 @@ const PropertyDetails = () => {
     try {
       setLoading(true);
       const res = await api.get(`/properties/get-property/${id}`);
-      console.log(res);
-
       setProperty(res.data.property);
     } catch (error) {
       toast.error(error.response?.data?.msg || "Failed to load property");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const generateSummary = async () => {
+    try {
+      setSummarizing(true);
+      const res = await api.get(`/ai/summary/${id}`);
+      setSummary(res.data.summary || "");
+    } catch (error) {
+      toast.error(error.response?.data?.msg || "Failed to generate summary");
+    } finally {
+      setSummarizing(false);
     }
   };
 
@@ -102,11 +122,11 @@ const PropertyDetails = () => {
 
             <div className="mt-5 grid grid-cols-3 gap-3">
               <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-center">
-                <p className="text-lg font-bold">{property.bedrooms}</p>
+                <p className="text-lg font-bold">{property.bedRooms}</p>
                 <p className="text-xs text-slate-500">Bedrooms</p>
               </div>
               <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-center">
-                <p className="text-lg font-bold">{property.bathrooms}</p>
+                <p className="text-lg font-bold">{property.bathRooms}</p>
                 <p className="text-xs text-slate-500">Bathrooms</p>
               </div>
               <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-center">
@@ -121,6 +141,27 @@ const PropertyDetails = () => {
             <p className="mt-2 text-sm leading-6 text-slate-400">
               {property.description}
             </p>
+
+            {/* AI Summary */}
+            <div className="mt-5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <p className="flex items-center gap-2 text-sm font-medium text-indigo-300">
+                  <FiZap size={14} />
+                  AI Summary
+                </p>
+                <button
+                  onClick={generateSummary}
+                  disabled={summarizing}
+                  className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold transition hover:bg-indigo-500 disabled:opacity-60"
+                >
+                  {summarizing ? "Generating..." : "Generate"}
+                </button>
+              </div>
+
+              {summary && (
+                <p className="mt-2 text-sm text-slate-400">{summary}</p>
+              )}
+            </div>
           </div>
 
           {/* Right: Owner card + Request button */}

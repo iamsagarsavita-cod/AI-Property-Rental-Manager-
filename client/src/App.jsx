@@ -11,6 +11,7 @@ import UserDashboard from "./pages/user/Dashboard";
 import MyRequests from "./pages/user/MyRequests";
 import Properties from "./pages/user/Properties";
 import PropertyDetails from "./pages/user/PropertyDetails";
+import Recommended from "./pages/user/Recommended";
 
 import OwnerDashboard from "./pages/owner/OwnerDashboard";
 import MyProperties from "./pages/owner/MyProperties";
@@ -18,6 +19,10 @@ import PropertyForm from "./pages/owner/PropertyForm";
 import Requests from "./pages/owner/Requests";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/Users";
+import AdminProperties from "./pages/admin/Properties";
+import Analytics from "./pages/admin/Analytics";
+import AdminCategories from "./pages/admin/Categories";
 
 import Profile from "./pages/shared/Profile";
 
@@ -36,6 +41,7 @@ const App = () => {
             <Route path="/user/requests" element={<MyRequests />} />
             <Route path="/user/properties" element={<Properties />} />
             <Route path="/user/properties/:id" element={<PropertyDetails />} />
+            <Route path="/user/recommended" element={<Recommended />} />
 
             <Route path="/user/profile" element={<Profile />} />
           </Route>
@@ -57,6 +63,11 @@ const App = () => {
           {/* Admin Routes */}
           <Route element={<AdminRoute />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/properties" element={<AdminProperties />} />
+            <Route path="/admin/analytics" element={<Analytics />} />
+            <Route path="/admin/categories" element={<AdminCategories />} />
+
             <Route path="/admin/profile" element={<Profile />} />
           </Route>
         </Route>

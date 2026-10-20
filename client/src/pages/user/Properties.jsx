@@ -5,6 +5,7 @@ import {
   FiHome,
   FiChevronLeft,
   FiChevronRight,
+  FiZap,
 } from "react-icons/fi";
 
 import { useState, useEffect } from "react";
@@ -28,13 +29,14 @@ const Properties = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
+  const [requirement, setRequirement] = useState("");
+  const [analyzing, setAnalyzing] = useState(false);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
         const res = await api.get("/categories/all-categories");
-        console.log(res);
-
-        setCategories(res.data.category);
+        setCategories(res.data.category || []);
       } catch (error) {
         console.log(error.response?.data?.msg);
       }
@@ -77,6 +79,40 @@ const Properties = () => {
     }
   };
 
+  const analyzeWithAI = async () => {
+    if (!requirement.trim()) {
+      toast.error("Please describe what you are looking for");
+      return;
+    }
+
+    try {
+      setAnalyzing(true);
+      const res = await api.post("/ai/analyse-requirement", { requirement });
+      const ai = res.data.filters || {};
+
+      const matched = categories.find(
+        (c) =>
+          ai.categoryHint &&
+          c.categoryName.toLowerCase().includes(ai.categoryHint.toLowerCase()),
+      );
+
+      setFilters({
+        search: ai.location || "",
+        categoryId: matched ? matched._id : "",
+        minPrice: ai.minPrice || "",
+        maxPrice: ai.maxPrice || "",
+      });
+      setPage(1);
+      toast.success("Filters applied");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.msg || "AI could not analyze your request",
+      );
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
   const changeFilter = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
@@ -92,6 +128,31 @@ const Properties = () => {
         <p className="mt-1 text-sm text-slate-400">
           Find a place that feels like home.
         </p>
+
+        {/* AI Search */}
+        <div className="mt-6 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-4">
+          <p className="flex items-center gap-2 text-sm font-medium text-indigo-300">
+            <FiZap size={15} />
+            Describe what you need, AI will set the filters
+          </p>
+
+          <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+            <input
+              type="text"
+              placeholder="e.g. 2BHK near Andheri under 20000"
+              value={requirement}
+              onChange={(e) => setRequirement(e.target.value)}
+              className="flex-1 rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+            />
+            <button
+              onClick={analyzeWithAI}
+              disabled={analyzing}
+              className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold transition hover:bg-indigo-500 disabled:opacity-60"
+            >
+              {analyzing ? "Analyzing..." : "Find with AI"}
+            </button>
+          </div>
+        </div>
 
         {/* Search + Filter Bar */}
         <div className="mt-6 grid gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:grid-cols-2 lg:grid-cols-5">
@@ -190,7 +251,7 @@ const Properties = () => {
                       </span>
                     </p>
                     <p className="text-xs text-slate-500">
-                      {property.bedrooms} Bed • {property.bathrooms} Bath
+                      {property.bedRooms} Bed • {property.bathRooms} Bath
                     </p>
                   </div>
                 </div>
