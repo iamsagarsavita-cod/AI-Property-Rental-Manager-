@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { FiMapPin, FiHome, FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
+import { FiMapPin, FiEdit2, FiTrash2, FiPlus } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
-import api, { imageUrl } from "../../services/api";
+import api from "../../services/api";
 import Navbar from "../../components/Navbar";
+import PropertyImageCarousel from "../../components/PropertyImageCarousel";
 
 const statusStyles = {
   available: "bg-emerald-500/10 text-emerald-400",
@@ -86,17 +87,13 @@ const MyProperties = () => {
                 key={property._id}
                 className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60"
               >
-                <div className="flex h-40 items-center justify-center overflow-hidden bg-slate-800 text-slate-600">
-                  {property.images?.[0] ? (
-                    <img
-                      src={imageUrl(property.images[0])}
-                      alt={property.title}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <FiHome size={32} />
-                  )}
-                </div>
+                <PropertyImageCarousel
+                  images={property.images}
+                  title={property.title}
+                  heightClass="h-40"
+                  autoPlay
+                  showArrows={false}
+                />
 
                 <div className="p-4">
                   <span

@@ -22,12 +22,12 @@ const getDashboardStats = async (req, res) => {
       status: "inactive",
     });
 
-    let totalRentelRequests = await RentalReqModel.countDocuments();
+    let totalRentalRequests = await RentalReqModel.countDocuments();
     let pendingRequests = await RentalReqModel.countDocuments({
       status: "pending",
     });
 
-    let approveRequests = await RentalReqModel.countDocuments({
+    let approvedRequests = await RentalReqModel.countDocuments({
       status: "approved",
     });
 
@@ -50,9 +50,9 @@ const getDashboardStats = async (req, res) => {
         inactiveProperties,
       },
       rentalRequests: {
-        totalRentelRequests,
+        totalRentalRequests,
         pendingRequests,
-        approveRequests,
+        approvedRequests,
         rejectedRequests,
       },
     };

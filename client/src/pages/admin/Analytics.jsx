@@ -38,21 +38,53 @@ const Analytics = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api
-      .get("/admin/dashboard-stats")
-      .then((res) => setStats(res.data.stats))
-      .catch((error) =>
-        toast.error(error.response?.data?.msg || "Failed to load stats"),
-      );
+    const fetchStats = async (showError = true) => {
+      try {
+        const res = await api.get("/admin/dashboard-stats");
+        setStats(res.data.stats);
+      } catch (error) {
+        if (showError) {
+          toast.error(error.response?.data?.msg || "Failed to load stats");
+        }
+      }
+    };
+
+    const refreshStats = () => {
+      if (document.visibilityState === "visible") fetchStats(false);
+    };
+
+    fetchStats();
+    const refreshInterval = window.setInterval(refreshStats, 15000);
+    window.addEventListener("focus", refreshStats);
+    document.addEventListener("visibilitychange", refreshStats);
+
+    return () => {
+      window.clearInterval(refreshInterval);
+      window.removeEventListener("focus", refreshStats);
+      document.removeEventListener("visibilitychange", refreshStats);
+    };
   }, []);
 
   useEffect(() => {
+    const refreshRequests = () => {
+      if (document.visibilityState === "visible") fetchRequests(false);
+    };
+
     fetchRequests();
+    const refreshInterval = window.setInterval(refreshRequests, 15000);
+    window.addEventListener("focus", refreshRequests);
+    document.addEventListener("visibilitychange", refreshRequests);
+
+    return () => {
+      window.clearInterval(refreshInterval);
+      window.removeEventListener("focus", refreshRequests);
+      document.removeEventListener("visibilitychange", refreshRequests);
+    };
   }, [activeTab]);
 
-  const fetchRequests = async () => {
+  const fetchRequests = async (showLoading = true) => {
     try {
-      setLoading(true);
+      if (showLoading) setLoading(true);
 
       const params = {};
       if (activeTab !== "all") params.status = activeTab;
@@ -60,12 +92,12 @@ const Analytics = () => {
       const res = await api.get("/admin/all-rental-requests", { params });
       setRequests(res.data.rentalRequests || []);
     } catch (error) {
-      if (error.response?.status !== 404) {
+      if (error.response?.status !== 404 && showLoading) {
         toast.error(error.response?.data?.msg || "Failed to load requests");
       }
       setRequests([]);
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   };
 

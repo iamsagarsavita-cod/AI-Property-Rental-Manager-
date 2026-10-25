@@ -6,25 +6,73 @@ import Navbar from "../../components/Navbar";
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null);
+  const [rentalRequestStats, setRentalRequestStats] = useState({
+    total: 0,
+    pending: 0,
+    approved: 0,
+    rejected: 0,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchStats();
-  }, []);
+    const fetchStats = async (showError = true) => {
+      try {
+        const res = await api.get("/admin/dashboard-stats");
+        setStats(res.data.stats);
+      } catch (error) {
+        if (showError) {
+          toast.error(
+            error.response?.data?.msg || "Failed to load dashboard stats",
+          );
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const fetchStats = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get("/admin/dashboard-stats");
-      setStats(res.data.stats);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.msg || "Failed to load dashboard stats",
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchRentalRequestStats = async (showError = true) => {
+      try {
+        const res = await api.get("/admin/all-rental-requests");
+        const requests = res.data.rentalRequests || [];
+
+        setRentalRequestStats({
+          total: requests.length,
+          pending: requests.filter((request) => request.status === "pending").length,
+          approved: requests.filter((request) => request.status === "approved").length,
+          rejected: requests.filter((request) => request.status === "rejected").length,
+        });
+      } catch (error) {
+        if (error.response?.status === 404) {
+          setRentalRequestStats({ total: 0, pending: 0, approved: 0, rejected: 0 });
+          return;
+        }
+        if (showError) {
+          toast.error(
+            error.response?.data?.msg || "Failed to load rental request counts",
+          );
+        }
+      }
+    };
+
+    const refreshDashboard = () => {
+      if (document.visibilityState === "visible") {
+        fetchStats(false);
+        fetchRentalRequestStats(false);
+      }
+    };
+
+    fetchStats();
+    fetchRentalRequestStats();
+    const refreshInterval = window.setInterval(refreshDashboard, 15000);
+    window.addEventListener("focus", refreshDashboard);
+    document.addEventListener("visibilitychange", refreshDashboard);
+
+    return () => {
+      window.clearInterval(refreshInterval);
+      window.removeEventListener("focus", refreshDashboard);
+      document.removeEventListener("visibilitychange", refreshDashboard);
+    };
+  }, []);
 
   const groups = stats
     ? [
@@ -68,19 +116,19 @@ const AdminDashboard = () => {
           items: [
             {
               label: "Total",
-              value: stats.rentalRequests?.totalRentalRequests || 0,
+              value: rentalRequestStats.total,
             },
             {
               label: "Pending",
-              value: stats.rentalRequests?.pendingRequests || 0,
+              value: rentalRequestStats.pending,
             },
             {
               label: "Approved",
-              value: stats.rentalRequests?.approvedRequests || 0,
+              value: rentalRequestStats.approved,
             },
             {
               label: "Rejected",
-              value: stats.rentalRequests?.rejectedRequests || 0,
+              value: rentalRequestStats.rejected,
             },
           ],
         },

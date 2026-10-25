@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import {
   FiSearch,
   FiMapPin,
-  FiHome,
   FiChevronLeft,
   FiChevronRight,
   FiZap,
@@ -11,115 +10,48 @@ import {
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import api from "../../services/api";
-import { imageUrl } from "../../services/api";
 import Navbar from "../../components/Navbar";
+import PropertyImageCarousel from "../../components/PropertyImageCarousel";
 
-// Extracted Card Component to handle individual image slider state
-const PropertyCard = ({ property }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const images = property.images || [];
+const PropertyCard = ({ property }) => (
+  <article className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60 transition hover:border-indigo-500/50">
+    <PropertyImageCarousel
+      images={property.images}
+      title={property.title}
+      heightClass="h-44"
+      autoPlay
+      showArrows={false}
+    />
 
-  const nextSlide = (e) => {
-    e.preventDefault(); // Prevents clicking the Link to the details page
-    if (images.length > 1) {
-      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-    }
-  };
-
-  const prevSlide = (e) => {
-    e.preventDefault(); // Prevents clicking the Link to the details page
-    if (images.length > 1) {
-      setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-    }
-  };
-
-  return (
     <Link
       to={`/user/properties/${property._id}`}
-      className="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60 transition hover:border-indigo-500/50"
+      className="group block p-4"
     >
-      {/* Image Slider Container */}
-      <div className="group/slider relative flex h-44 items-center justify-center overflow-hidden bg-slate-800 text-slate-600">
-        {images.length > 0 ? (
-          <>
-            <div
-              className="flex h-full w-full transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {images.map((img, i) => (
-                <img
-                  key={i}
-                  src={imageUrl(img)}
-                  alt={property.title}
-                  className="h-full w-full shrink-0 object-cover"
-                />
-              ))}
-            </div>
+      <span className="rounded-full bg-indigo-500/10 px-2.5 py-1 text-[11px] font-medium text-indigo-400">
+        {property.categoryId?.categoryName || "Property"}
+      </span>
 
-            {/* Arrows & Dots (Only show if more than 1 image) */}
-            {images.length > 1 && (
-              <>
-                <button
-                  onClick={prevSlide}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/70 group-hover/slider:opacity-100"
-                >
-                  <FiChevronLeft size={16} />
-                </button>
-                <button
-                  onClick={nextSlide}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/70 group-hover/slider:opacity-100"
-                >
-                  <FiChevronRight size={16} />
-                </button>
+      <h3 className="mt-3 font-semibold text-white transition group-hover:text-indigo-400">
+        {property.title}
+      </h3>
 
-                {/* Dots at bottom center */}
-                <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1.5">
-                  {images.map((_, i) => (
-                    <div
-                      key={i}
-                      className={`h-1.5 rounded-full transition-all ${
-                        currentIndex === i
-                          ? "w-3 bg-white"
-                          : "w-1.5 bg-white/50"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </>
-        ) : (
-          <FiHome size={36} />
-        )}
-      </div>
+      <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+        <FiMapPin size={13} />
+        {property.location}
+      </p>
 
-      <div className="p-4">
-        <span className="rounded-full bg-indigo-500/10 px-2.5 py-1 text-[11px] font-medium text-indigo-400">
-          {property.categoryId?.categoryName || "Property"}
-        </span>
-
-        <h3 className="mt-3 font-semibold text-white group-hover:text-indigo-400">
-          {property.title}
-        </h3>
-
-        <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
-          <FiMapPin size={13} />
-          {property.location}
+      <div className="mt-3 flex items-center justify-between border-t border-slate-800 pt-3">
+        <p className="text-sm font-bold text-white">
+          ₹{property.price?.toLocaleString()}
+          <span className="text-xs font-normal text-slate-500">/mo</span>
         </p>
-
-        <div className="mt-3 flex items-center justify-between border-t border-slate-800 pt-3">
-          <p className="text-sm font-bold text-white">
-            ₹{property.price?.toLocaleString()}
-            <span className="text-xs font-normal text-slate-500">/mo</span>
-          </p>
-          <p className="text-xs text-slate-500">
-            {property.bedRooms} Bed • {property.bathRooms} Bath
-          </p>
-        </div>
+        <p className="text-xs text-slate-500">
+          {property.bedRooms} Bed • {property.bathRooms} Bath
+        </p>
       </div>
     </Link>
-  );
-};
+  </article>
+);
 
 const Properties = () => {
   const [properties, setProperties] = useState([]);
@@ -137,6 +69,8 @@ const Properties = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [requirement, setRequirement] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
+  const [aiSearchActive, setAiSearchActive] = useState(false);
+  const [aiSearchRun, setAiSearchRun] = useState(0);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -155,7 +89,7 @@ const Properties = () => {
       fetchProperties();
     }, 400);
     return () => clearTimeout(delay);
-  }, [filters, page]);
+  }, [filters, page, aiSearchRun]);
 
   const fetchProperties = async () => {
     try {
@@ -168,12 +102,23 @@ const Properties = () => {
 
       const res = await api.get("/properties/all-properties", { params });
 
-      setProperties(res.data.properties);
-      setTotalPages(res.data.totalPages);
+      const foundProperties = res.data.properties || [];
+      setProperties(foundProperties);
+      setTotalPages(res.data.totalPages || 1);
+      if (aiSearchActive && foundProperties.length === 0) {
+        toast.info(
+          "No properties match your AI search. Try another location, budget, or property type.",
+        );
+      }
     } catch (error) {
       if (error.response?.status === 404) {
         setProperties([]);
         setTotalPages(1);
+        if (aiSearchActive) {
+          toast.info(
+            "No properties match your AI search. Try another location, budget, or property type.",
+          );
+        }
       } else {
         toast.error(error.response?.data?.msg || "Failed to load properties");
       }
@@ -191,6 +136,17 @@ const Properties = () => {
       setAnalyzing(true);
       const res = await api.post("/ai/analyse-requirement", { requirement });
       const ai = res.data.filters || {};
+      const hasApplicableFilters = Boolean(
+        ai.location || ai.minPrice || ai.maxPrice || ai.categoryHint,
+      );
+
+      if (!hasApplicableFilters) {
+        setAiSearchActive(false);
+        toast.info(
+          "I couldn't identify a location, budget, or property type. Try describing what you're looking for.",
+        );
+        return;
+      }
 
       const matched = categories.find(
         (c) =>
@@ -198,13 +154,25 @@ const Properties = () => {
           c.categoryName.toLowerCase().includes(ai.categoryHint.toLowerCase()),
       );
 
-      setFilters({
+      const nextFilters = {
         search: ai.location || "",
         categoryId: matched ? matched._id : "",
         minPrice: ai.minPrice || "",
         maxPrice: ai.maxPrice || "",
-      });
+      };
+
+      if (ai.categoryHint && !matched && !ai.location && !ai.minPrice && !ai.maxPrice) {
+        setAiSearchActive(false);
+        toast.info(
+          `I couldn't match the property type "${ai.categoryHint}" to a category. Try another property type.`,
+        );
+        return;
+      }
+
+      setAiSearchActive(true);
+      setFilters(nextFilters);
       setPage(1);
+      setAiSearchRun((run) => run + 1);
       toast.success("Filters applied");
     } catch (error) {
       toast.error(
@@ -217,6 +185,7 @@ const Properties = () => {
 
   const changeFilter = (e) => {
     const { name, value } = e.target;
+    setAiSearchActive(false);
     setFilters((prev) => ({ ...prev, [name]: value }));
     setPage(1);
   };
