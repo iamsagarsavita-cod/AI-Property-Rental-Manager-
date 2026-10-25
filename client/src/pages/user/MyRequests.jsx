@@ -5,13 +5,13 @@ import api from "../../services/api";
 import Navbar from "../../components/Navbar";
 
 const statusStyles = {
-  pending: { text: "text-amber-400", bg: "bg-amber-500/10", Icon: FiClock },
+  pending: { text: "text-amber-800", bg: "bg-amber-100", Icon: FiClock },
   approved: {
-    text: "text-emerald-400",
-    bg: "bg-emerald-500/10",
+    text: "text-emerald-800",
+    bg: "bg-emerald-100",
     Icon: FiCheckCircle,
   },
-  rejected: { text: "text-red-400", bg: "bg-red-500/10", Icon: FiXCircle },
+  rejected: { text: "text-red-800", bg: "bg-red-100", Icon: FiXCircle },
 };
 
 const MyRequests = () => {
@@ -38,21 +38,21 @@ const MyRequests = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">My Rental Requests</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Track the status of properties you've requested.
         </p>
 
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading requests...
           </p>
         ) : requests.length === 0 ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             You haven't sent any rental requests yet.
           </p>
         ) : (
@@ -63,15 +63,15 @@ const MyRequests = () => {
               return (
                 <div
                   key={req._id}
-                  className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:flex-row sm:items-center"
+                  className="flex flex-col justify-between gap-3 rounded-2xl border border-[#e9dfd4] bg-white p-4 sm:flex-row sm:items-center"
                 >
                   <div>
                     <h3 className="font-semibold">{req.propertyId?.title}</h3>
-                    <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                    <p className="mt-1 flex items-center gap-1.5 text-xs text-[#837468]">
                       <FiMapPin size={13} />
                       {req.propertyId?.location}
                     </p>
-                    <p className="mt-1 text-sm font-medium text-slate-300">
+                    <p className="mt-1 text-sm font-medium text-[#51463d]">
                       ₹{req.propertyId?.price?.toLocaleString()}/mo
                     </p>
                   </div>

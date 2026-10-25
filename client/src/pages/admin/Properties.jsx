@@ -6,9 +6,9 @@ import Navbar from "../../components/Navbar";
 import PropertyImageCarousel from "../../components/PropertyImageCarousel";
 
 const statusStyles = {
-  available: "bg-emerald-500/10 text-emerald-400",
-  rented: "bg-amber-500/10 text-amber-400",
-  inactive: "bg-slate-700 text-slate-400",
+  available: "bg-emerald-100 text-emerald-800",
+  rented: "bg-amber-100 text-amber-800",
+  inactive: "bg-[#e3d7ca] text-[#6d5e52]",
 };
 
 const tabs = ["all", "available", "rented", "inactive"];
@@ -42,12 +42,12 @@ const Properties = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">All Properties</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Every property listed on the platform, across all owners.
         </p>
 
@@ -58,8 +58,8 @@ const Properties = () => {
               onClick={() => setActiveTab(tab)}
               className={`rounded-xl px-4 py-2 text-sm font-medium capitalize transition ${
                 activeTab === tab
-                  ? "bg-indigo-600 text-white"
-                  : "border border-slate-800 bg-slate-900 text-slate-400 hover:text-white"
+                  ? "bg-[#a96343] text-white"
+                  : "border border-[#e9dfd4] bg-[#fffdfa] text-[#6d5e52] hover:text-[#382f28]"
               }`}
             >
               {tab}
@@ -68,11 +68,11 @@ const Properties = () => {
         </div>
 
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading properties...
           </p>
         ) : properties.length === 0 ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             No properties found.
           </p>
         ) : (
@@ -80,7 +80,7 @@ const Properties = () => {
             {properties.map((p) => (
               <div
                 key={p._id}
-                className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60"
+                className="overflow-hidden rounded-2xl border border-[#e9dfd4] bg-white"
               >
                 <PropertyImageCarousel
                   images={p.images}
@@ -92,7 +92,7 @@ const Properties = () => {
 
                 <div className="p-4">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-full bg-indigo-500/10 px-2.5 py-1 text-[11px] font-medium text-indigo-400">
+                    <span className="rounded-full bg-[#f5e9df] px-2.5 py-1 text-[11px] font-medium text-[#a96343]">
                       {p.categoryId?.categoryName || "Property"}
                     </span>
                     <span
@@ -103,20 +103,20 @@ const Properties = () => {
                   </div>
 
                   <h3 className="mt-3 font-semibold">{p.title}</h3>
-                  <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                  <p className="mt-1 flex items-center gap-1.5 text-xs text-[#837468]">
                     <FiMapPin size={13} />
                     {p.location}
                   </p>
 
-                  <div className="mt-3 flex items-center justify-between border-t border-slate-800 pt-3">
+                  <div className="mt-3 flex items-center justify-between border-t border-[#e9dfd4] pt-3">
                     <p className="text-sm font-bold">
                       ₹{p.price.toLocaleString()}
-                      <span className="text-xs font-normal text-slate-500">
+                      <span className="text-xs font-normal text-[#837468]">
                         /mo
                       </span>
                     </p>
 
-                    <p className="flex items-center gap-1.5 text-xs text-slate-500">
+                    <p className="flex items-center gap-1.5 text-xs text-[#837468]">
                       <FiUser size={12} />
                       {p.ownerId?.fullName}
                     </p>

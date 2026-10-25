@@ -13,13 +13,13 @@ import api from "../../services/api";
 import Navbar from "../../components/Navbar";
 
 const statusStyles = {
-  pending: { text: "text-amber-400", bg: "bg-amber-500/10", Icon: FiClock },
+  pending: { text: "text-amber-800", bg: "bg-amber-100", Icon: FiClock },
   approved: {
-    text: "text-emerald-400",
-    bg: "bg-emerald-500/10",
+    text: "text-emerald-800",
+    bg: "bg-emerald-100",
     Icon: FiCheckCircle,
   },
-  rejected: { text: "text-red-400", bg: "bg-red-500/10", Icon: FiXCircle },
+  rejected: { text: "text-red-800", bg: "bg-red-100", Icon: FiXCircle },
 };
 
 const Requests = () => {
@@ -62,21 +62,21 @@ const Requests = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">Rental Requests</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Requests from users interested in your properties.
         </p>
 
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading requests...
           </p>
         ) : requests.length === 0 ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             No rental requests yet.
           </p>
         ) : (
@@ -88,12 +88,12 @@ const Requests = () => {
               return (
                 <div
                   key={req._id}
-                  className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4"
+                  className="rounded-2xl border border-[#e9dfd4] bg-white p-4"
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <h3 className="font-semibold">{req.propertyId?.title}</h3>
-                      <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                      <p className="mt-1 flex items-center gap-1.5 text-xs text-[#837468]">
                         <FiMapPin size={13} />
                         {req.propertyId?.location}
                       </p>
@@ -107,13 +107,13 @@ const Requests = () => {
                     </span>
                   </div>
 
-                  <div className="mt-3 flex items-center gap-2 border-t border-slate-800 pt-3 text-sm text-slate-300">
-                    <FiUser size={14} className="text-slate-500" />
+                  <div className="mt-3 flex items-center gap-2 border-t border-[#e9dfd4] pt-3 text-sm text-[#51463d]">
+                    <FiUser size={14} className="text-[#837468]" />
                     {req.userId?.fullName}
                   </div>
 
                   {req.message && (
-                    <p className="mt-1.5 text-sm italic text-slate-500">
+                    <p className="mt-1.5 text-sm italic text-[#837468]">
                       "{req.message}"
                     </p>
                   )}
@@ -131,7 +131,7 @@ const Requests = () => {
                       <button
                         onClick={() => respondToRequest(req._id, "reject")}
                         disabled={isActing}
-                        className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-red-500/30 py-2 text-xs font-semibold text-red-400 transition hover:bg-red-500/10 disabled:opacity-60"
+                        className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-red-200 py-2 text-xs font-semibold text-red-800 transition hover:bg-red-50 disabled:opacity-60"
                       >
                         <FiX size={14} />
                         {isActing ? "Please wait..." : "Reject"}

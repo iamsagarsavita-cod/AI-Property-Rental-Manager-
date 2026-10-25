@@ -71,9 +71,9 @@ const PropertyDetails = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white">
+      <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
         <Navbar />
-        <p className="py-20 text-center text-sm text-slate-500">
+        <p className="py-20 text-center text-sm text-[#837468]">
           Loading property...
         </p>
       </div>
@@ -83,7 +83,7 @@ const PropertyDetails = () => {
   if (!property) return null;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
@@ -98,85 +98,85 @@ const PropertyDetails = () => {
         <div className="mt-6 grid gap-6 lg:grid-cols-3">
           {/* Left: Details */}
           <div className="lg:col-span-2">
-            <span className="rounded-full bg-indigo-500/10 px-2.5 py-1 text-[11px] font-medium text-indigo-400">
+            <span className="rounded-full bg-[#f5e9df] px-2.5 py-1 text-[11px] font-medium text-[#a96343]">
               {property.categoryId?.categoryName || "Property"}
             </span>
 
             <h1 className="mt-3 text-2xl font-bold">{property.title}</h1>
 
-            <p className="mt-2 flex items-center gap-1.5 text-sm text-slate-400">
+            <p className="mt-2 flex items-center gap-1.5 text-sm text-[#6d5e52]">
               <FiMapPin size={14} />
               {property.location}
             </p>
 
             <div className="mt-5 grid grid-cols-3 gap-3">
-              <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-center">
+              <div className="rounded-xl border border-[#e9dfd4] bg-white p-3 text-center">
                 <p className="text-lg font-bold">{property.bedRooms}</p>
-                <p className="text-xs text-slate-500">Bedrooms</p>
+                <p className="text-xs text-[#837468]">Bedrooms</p>
               </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-center">
+              <div className="rounded-xl border border-[#e9dfd4] bg-white p-3 text-center">
                 <p className="text-lg font-bold">{property.bathRooms}</p>
-                <p className="text-xs text-slate-500">Bathrooms</p>
+                <p className="text-xs text-[#837468]">Bathrooms</p>
               </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-center">
+              <div className="rounded-xl border border-[#e9dfd4] bg-white p-3 text-center">
                 <p className="text-lg font-bold">{property.area}</p>
-                <p className="text-xs text-slate-500">Sq.ft</p>
+                <p className="text-xs text-[#837468]">Sq.ft</p>
               </div>
             </div>
 
-            <h2 className="mt-6 text-sm font-semibold text-slate-300">
+            <h2 className="mt-6 text-sm font-semibold text-[#51463d]">
               Description
             </h2>
-            <p className="mt-2 text-sm leading-6 text-slate-400">
+            <p className="mt-2 text-sm leading-6 text-[#6d5e52]">
               {property.description}
             </p>
 
             {/* AI Summary */}
-            <div className="mt-5 rounded-xl border border-indigo-500/20 bg-indigo-500/5 p-4">
+            <div className="mt-5 rounded-xl border border-[#e7cdbd] bg-[#a96343]/5 p-4">
               <div className="flex items-center justify-between gap-3">
-                <p className="flex items-center gap-2 text-sm font-medium text-indigo-300">
+                <p className="flex items-center gap-2 text-sm font-medium text-[#a96343]">
                   <FiZap size={14} />
                   AI Summary
                 </p>
                 <button
                   onClick={generateSummary}
                   disabled={summarizing}
-                  className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold transition hover:bg-indigo-500 disabled:opacity-60"
+                  className="rounded-lg bg-[#a96343] px-3 py-1.5 text-xs font-semibold transition hover:bg-[#8f5035] disabled:opacity-60"
                 >
                   {summarizing ? "Generating..." : "Generate"}
                 </button>
               </div>
               {summary && (
-                <p className="mt-2 text-sm text-slate-400">{summary}</p>
+                <p className="mt-2 text-sm text-[#6d5e52]">{summary}</p>
               )}
             </div>
           </div>
 
           {/* Right: Owner card + Request button */}
-          <div className="h-fit rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+          <div className="h-fit rounded-2xl border border-[#e9dfd4] bg-white p-5">
             <p className="text-2xl font-bold">
               ₹{property.price?.toLocaleString()}
-              <span className="text-sm font-normal text-slate-500">/month</span>
+              <span className="text-sm font-normal text-[#837468]">/month</span>
             </p>
 
-            <div className="mt-5 border-t border-slate-800 pt-5">
-              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-slate-500">
+            <div className="mt-5 border-t border-[#e9dfd4] pt-5">
+              <p className="mb-3 text-xs font-medium uppercase tracking-wide text-[#837468]">
                 Listed by
               </p>
 
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#a96343]">
                   <FiUser size={16} />
                 </div>
                 <div>
                   <p className="text-sm font-medium">
                     {property.ownerId?.fullName}
                   </p>
-                  <p className="text-xs text-slate-500">Property Owner</p>
+                  <p className="text-xs text-[#837468]">Property Owner</p>
                 </div>
               </div>
 
-              <div className="mt-3 space-y-1.5 text-xs text-slate-500">
+              <div className="mt-3 space-y-1.5 text-xs text-[#837468]">
                 <p className="flex items-center gap-2">
                   <FiMail size={12} /> {property.ownerId?.email}
                 </p>
@@ -193,19 +193,19 @@ const PropertyDetails = () => {
                   placeholder="Add a message for the owner (optional)"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="mt-5 w-full resize-none rounded-xl border border-slate-800 bg-slate-950 px-3 py-2.5 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+                  className="mt-5 w-full resize-none rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-3 py-2.5 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
                 />
 
                 <button
                   onClick={sendRequest}
                   disabled={sending}
-                  className="mt-3 w-full rounded-xl bg-indigo-600 py-3 text-sm font-semibold transition hover:bg-indigo-500 disabled:opacity-60"
+                  className="mt-3 w-full rounded-xl bg-[#a96343] py-3 text-sm font-semibold transition hover:bg-[#8f5035] disabled:opacity-60"
                 >
                   {sending ? "Sending..." : "Send Rental Request"}
                 </button>
               </>
             ) : (
-              <p className="mt-5 rounded-xl bg-slate-800 py-3 text-center text-sm text-slate-400">
+              <p className="mt-5 rounded-xl bg-[#f3ede5] py-3 text-center text-sm text-[#6d5e52]">
                 This property is currently {property.status}
               </p>
             )}

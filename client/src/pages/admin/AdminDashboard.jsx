@@ -136,17 +136,17 @@ const AdminDashboard = () => {
     : [];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Overview of everything happening on the platform.
         </p>
 
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading stats...
           </p>
         ) : (
@@ -154,10 +154,10 @@ const AdminDashboard = () => {
             {groups.map(({ title, Icon, items }) => (
               <div
                 key={title}
-                className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5"
+                className="rounded-2xl border border-[#e9dfd4] bg-white p-5"
               >
                 <div className="flex items-center gap-2.5">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#f5e9df] text-[#a96343]">
                     <Icon size={16} />
                   </div>
                   <h2 className="font-semibold">{title}</h2>
@@ -167,10 +167,10 @@ const AdminDashboard = () => {
                   {items.map((item) => (
                     <div
                       key={item.label}
-                      className="rounded-xl border border-slate-800 bg-slate-950 p-3"
+                      className="rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] p-3"
                     >
                       <p className="text-2xl font-bold">{item.value}</p>
-                      <p className="mt-0.5 text-xs text-slate-500">
+                      <p className="mt-0.5 text-xs text-[#837468]">
                         {item.label}
                       </p>
                     </div>

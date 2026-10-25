@@ -60,23 +60,23 @@ const Navbar = () => {
         : "/admin/profile";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[#e9dfd4] bg-[#fffdfa]/95 backdrop-blur-xl">
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Logo */}
         <NavLink
           to={navLinks[0]?.path || "/"}
           className="flex items-center gap-3"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-violet-600 text-sm font-bold shadow-lg shadow-indigo-500/20">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-[#b87856] to-[#94583e] text-sm font-bold shadow-lg shadow-[#a96343]/20">
             PR
           </div>
 
           <div className="hidden sm:block">
-            <h1 className="text-sm font-bold text-white">
+            <h1 className="text-sm font-bold text-[#382f28]">
               Property Rental Manager
             </h1>
 
-            <p className="text-[10px] text-slate-500 capitalize">
+            <p className="text-[10px] text-[#837468] capitalize">
               {role} Panel
             </p>
           </div>
@@ -93,8 +93,8 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium transition ${
                     isActive
-                      ? "bg-indigo-500/10 text-indigo-400"
-                      : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                      ? "bg-[#f5e9df] text-[#a96343]"
+                      : "text-[#6d5e52] hover:bg-[#fffdfa] hover:text-[#382f28]"
                   }`
                 }
               >
@@ -108,17 +108,17 @@ const Navbar = () => {
         {/* Right Section */}
         <div className="flex items-center gap-2">
           <button
-            className="hidden items-center gap-2 rounded-xl border border-slate-800 bg-slate-900 px-3 py-2 md:flex"
+            className="hidden items-center gap-2 rounded-xl border border-[#e9dfd4] bg-[#fffdfa] px-3 py-2 md:flex"
             onClick={() => navigate(profilePath)}
           >
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600 text-xs font-bold">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#a96343] text-xs font-bold">
               <FiUser size={14} />
             </div>
-            <span className="text-sm font-medium text-slate-300">Profile</span>
+            <span className="text-sm font-medium text-[#51463d]">Profile</span>
           </button>
 
           <button
-            className="hidden h-10 w-10 items-center justify-center rounded-xl border border-slate-800 bg-slate-900 text-slate-400 transition hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 md:flex"
+            className="hidden h-10 w-10 items-center justify-center rounded-xl border border-[#e9dfd4] bg-[#fffdfa] text-[#6d5e52] transition hover:border-red-300 hover:bg-red-50 hover:text-red-900 md:flex"
             title="Logout"
             onClick={handleLogout}
           >
@@ -126,7 +126,7 @@ const Navbar = () => {
           </button>
 
           <button
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-800 bg-slate-900 text-slate-300 lg:hidden"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-[#e9dfd4] bg-[#fffdfa] text-[#51463d] lg:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             {menuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
@@ -135,7 +135,7 @@ const Navbar = () => {
       </div>
 
       {menuOpen && (
-        <div className="border-t border-slate-800 bg-slate-950 px-4 py-4 lg:hidden">
+        <div className="border-t border-[#e9dfd4] bg-[#f7f3ed] px-4 py-4 lg:hidden">
           <nav className="space-y-1">
             {navLinks.map((link) => {
               const Icon = link.icon;
@@ -148,8 +148,8 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
                       isActive
-                        ? "bg-indigo-500/10 text-indigo-400"
-                        : "text-slate-400 hover:bg-slate-900 hover:text-white"
+                        ? "bg-[#f5e9df] text-[#a96343]"
+                        : "text-[#6d5e52] hover:bg-[#fffdfa] hover:text-[#382f28]"
                     }`
                   }
                 >
@@ -164,7 +164,7 @@ const Navbar = () => {
                 setMenuOpen(false);
                 navigate(profilePath);
               }}
-              className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-400 transition hover:bg-slate-900 hover:text-white"
+              className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-[#6d5e52] transition hover:bg-[#fffdfa] hover:text-[#382f28]"
             >
               <FiUser size={18} />
               Profile
@@ -172,7 +172,7 @@ const Navbar = () => {
 
             <button
               onClick={handleLogout}
-              className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-400 transition hover:bg-red-500/10"
+              className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-800 transition hover:bg-red-50"
             >
               <FiLogOut size={18} />
               Logout

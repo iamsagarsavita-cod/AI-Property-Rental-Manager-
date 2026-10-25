@@ -54,11 +54,11 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <div className="grid min-h-screen md:grid-cols-2">
         {/* Left Section */}
         <div className="relative hidden overflow-hidden md:flex">
-          <div className="absolute inset-0 bg-linear-to-br from-indigo-600 via-violet-700 to-slate-950" />
+          <div className="absolute inset-0 bg-linear-to-br from-[#b87856] via-[#89583f] to-[#4a382e]" />
 
           <div className="absolute -left-20 top-20 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
           <div className="absolute bottom-10 right-10 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl" />
@@ -119,18 +119,18 @@ const Login = () => {
           <div className="w-full max-w-md">
             {/* Mobile Logo */}
             <div className="mb-10 flex items-center gap-3 lg:hidden">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 font-bold">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#a96343] font-bold">
                 PR
               </div>
 
               <div>
                 <h2 className="font-bold">Property Rental Manager</h2>
-                <p className="text-xs text-slate-500">Find. Rent. Manage.</p>
+                <p className="text-xs text-[#837468]">Find. Rent. Manage.</p>
               </div>
             </div>
 
             <div className="mb-8">
-              <p className="mb-2 text-sm font-medium text-indigo-400">
+              <p className="mb-2 text-sm font-medium text-[#a96343]">
                 Welcome back
               </p>
 
@@ -138,7 +138,7 @@ const Login = () => {
                 Sign in to your account
               </h2>
 
-              <p className="mt-3 text-sm leading-6 text-slate-400">
+              <p className="mt-3 text-sm leading-6 text-[#6d5e52]">
                 Continue browsing or managing your rental properties.
               </p>
             </div>
@@ -146,17 +146,17 @@ const Login = () => {
             <form className="space-y-5" onSubmit={submitHandler}>
               {/* Email */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-[#51463d]">
                   Email address
                 </label>
 
                 <div className="relative">
-                  <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
 
                   <input
                     type="email"
                     placeholder="you@example.com"
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    className="w-full rounded-2xl border border-[#e9dfd4] bg-[#fffdfa] py-3.5 pl-11 pr-4 text-sm text-[#382f28] outline-none transition placeholder:text-[#9b8b7d] focus:border-[#a96343] focus:ring-4 focus:ring-[#a96343]/10"
                     value={formData.email}
                     onChange={changeHandler}
                     name="email"
@@ -167,18 +167,18 @@ const Login = () => {
               {/* Password */}
               <div>
                 <div className="mb-2 flex items-center justify-between">
-                  <label className="text-sm font-medium text-slate-300">
+                  <label className="text-sm font-medium text-[#51463d]">
                     Password
                   </label>
                 </div>
 
                 <div className="relative">
-                  <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
 
                   <input
                     type="password"
                     placeholder="Enter your password"
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    className="w-full rounded-2xl border border-[#e9dfd4] bg-[#fffdfa] py-3.5 pl-11 pr-4 text-sm text-[#382f28] outline-none transition placeholder:text-[#9b8b7d] focus:border-[#a96343] focus:ring-4 focus:ring-[#a96343]/10"
                     value={formData.password}
                     name="password"
                     onChange={changeHandler}
@@ -190,7 +190,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="group flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 py-3.5 text-sm font-semibold transition hover:bg-indigo-500 active:scale-[0.99]"
+                className="group flex w-full items-center justify-center gap-2 rounded-2xl bg-[#a96343] py-3.5 text-sm font-semibold transition hover:bg-[#8f5035] active:scale-[0.99]"
               >
                 {loading ? "Signing In.." : "Sign In"}
                 {!loading && (
@@ -201,16 +201,16 @@ const Login = () => {
 
             {/* Divider */}
             <div className="my-8 flex items-center gap-4">
-              <div className="h-px flex-1 bg-slate-800" />
-              <span className="text-xs text-slate-600">OR</span>
-              <div className="h-px flex-1 bg-slate-800" />
+              <div className="h-px flex-1 bg-[#f3ede5]" />
+              <span className="text-xs text-[#9b8b7d]">OR</span>
+              <div className="h-px flex-1 bg-[#f3ede5]" />
             </div>
 
-            <p className="text-center text-sm text-slate-500">
+            <p className="text-center text-sm text-[#837468]">
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="font-semibold text-indigo-400 hover:text-indigo-300"
+                className="font-semibold text-[#a96343] hover:text-[#8f5035]"
               >
                 Create account
               </Link>

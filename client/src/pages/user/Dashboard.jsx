@@ -13,9 +13,9 @@ import api from "../../services/api";
 import Navbar from "../../components/Navbar";
 
 const statusStyles = {
-  pending: "bg-amber-500/10 text-amber-400",
-  approved: "bg-emerald-500/10 text-emerald-400",
-  rejected: "bg-red-500/10 text-red-400",
+  pending: "bg-amber-100 text-amber-800",
+  approved: "bg-emerald-100 text-emerald-800",
+  rejected: "bg-red-100 text-red-800",
 };
 
 const Dashboard = () => {
@@ -66,19 +66,19 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">
           Welcome back{name ? `, ${name.split(" ")[0]}` : ""} 👋
         </h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Here's a quick look at your rental activity.
         </p>
 
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading dashboard...
           </p>
         ) : (
@@ -88,13 +88,13 @@ const Dashboard = () => {
               {stats.map(({ label, value, Icon }) => (
                 <div
                   key={label}
-                  className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4"
+                  className="rounded-2xl border border-[#e9dfd4] bg-white p-4"
                 >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#f5e9df] text-[#a96343]">
                     <Icon size={16} />
                   </div>
                   <p className="mt-3 text-2xl font-bold">{value}</p>
-                  <p className="text-xs text-slate-500">{label}</p>
+                  <p className="text-xs text-[#837468]">{label}</p>
                 </div>
               ))}
             </div>
@@ -103,18 +103,18 @@ const Dashboard = () => {
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               <Link
                 to="/user/properties"
-                className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 transition hover:border-indigo-500/50"
+                className="flex items-center gap-3 rounded-2xl border border-[#e9dfd4] bg-white p-4 transition hover:border-[#c89071]"
               >
-                <FiSearch className="text-indigo-400" />
+                <FiSearch className="text-[#a96343]" />
                 <span className="text-sm font-medium">
                   Browse all properties
                 </span>
               </Link>
               <Link
                 to="/user/recommended"
-                className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 transition hover:border-indigo-500/50"
+                className="flex items-center gap-3 rounded-2xl border border-[#e9dfd4] bg-white p-4 transition hover:border-[#c89071]"
               >
-                <FiZap className="text-indigo-400" />
+                <FiZap className="text-[#a96343]" />
                 <span className="text-sm font-medium">
                   See AI recommendations
                 </span>
@@ -128,7 +128,7 @@ const Dashboard = () => {
                   Latest properties
                 </h2>
                 {latestProperties.length === 0 ? (
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[#837468]">
                     No properties available yet.
                   </p>
                 ) : (
@@ -137,11 +137,11 @@ const Dashboard = () => {
                       <Link
                         key={p._id}
                         to={`/user/properties/${p._id}`}
-                        className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/60 p-4 transition hover:border-indigo-500/50"
+                        className="flex items-center justify-between rounded-2xl border border-[#e9dfd4] bg-white p-4 transition hover:border-[#c89071]"
                       >
                         <div>
                           <p className="font-medium">{p.title}</p>
-                          <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                          <p className="mt-1 flex items-center gap-1.5 text-xs text-[#837468]">
                             <FiMapPin size={12} />
                             {p.location}
                           </p>
@@ -159,7 +159,7 @@ const Dashboard = () => {
               <div>
                 <h2 className="mb-3 text-lg font-semibold">Recent requests</h2>
                 {requests.length === 0 ? (
-                  <p className="text-sm text-slate-500">
+                  <p className="text-sm text-[#837468]">
                     You haven't sent any requests yet.
                   </p>
                 ) : (
@@ -167,7 +167,7 @@ const Dashboard = () => {
                     {requests.slice(0, 3).map((r) => (
                       <div
                         key={r._id}
-                        className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4"
+                        className="rounded-2xl border border-[#e9dfd4] bg-white p-4"
                       >
                         <p className="text-sm font-medium">
                           {r.propertyId?.title}
@@ -181,7 +181,7 @@ const Dashboard = () => {
                     ))}
                     <Link
                       to="/user/requests"
-                      className="block text-center text-xs font-medium text-indigo-400 hover:text-indigo-300"
+                      className="block text-center text-xs font-medium text-[#a96343] hover:text-[#8f5035]"
                     >
                       View all requests
                     </Link>

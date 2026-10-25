@@ -93,19 +93,19 @@ const Categories = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">Manage Categories</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Property categories that owners can choose from.
         </p>
 
         {/* Add / Edit form */}
         <form
           onSubmit={submitHandler}
-          className="mt-6 grid gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:grid-cols-4"
+          className="mt-6 grid gap-3 rounded-2xl border border-[#e9dfd4] bg-white p-4 sm:grid-cols-4"
         >
           <input
             type="text"
@@ -113,7 +113,7 @@ const Categories = () => {
             placeholder="Category name"
             value={formData.categoryName}
             onChange={changeHandler}
-            className="rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+            className="rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-2.5 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
           />
           <input
             type="text"
@@ -121,13 +121,13 @@ const Categories = () => {
             placeholder="Description (min 10 characters)"
             value={formData.description}
             onChange={changeHandler}
-            className="rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500 sm:col-span-2"
+            className="rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-2.5 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343] sm:col-span-2"
           />
           <select
             name="status"
             value={formData.status}
             onChange={changeHandler}
-            className="rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm text-slate-300 outline-none focus:border-indigo-500"
+            className="rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-2.5 text-sm text-[#51463d] outline-none focus:border-[#a96343]"
           >
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
@@ -137,7 +137,7 @@ const Categories = () => {
             <button
               type="submit"
               disabled={saving}
-              className="flex-1 rounded-xl bg-indigo-600 py-2.5 text-sm font-semibold transition hover:bg-indigo-500 disabled:opacity-60"
+              className="flex-1 rounded-xl bg-[#a96343] py-2.5 text-sm font-semibold transition hover:bg-[#8f5035] disabled:opacity-60"
             >
               {saving
                 ? "Saving..."
@@ -151,7 +151,7 @@ const Categories = () => {
               <button
                 type="button"
                 onClick={cancelEdit}
-                className="rounded-xl border border-slate-800 px-5 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-slate-800"
+                className="rounded-xl border border-[#e9dfd4] px-5 py-2.5 text-sm font-medium text-[#51463d] transition hover:bg-[#f3ede5]"
               >
                 Cancel
               </button>
@@ -161,11 +161,11 @@ const Categories = () => {
 
         {/* List */}
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading categories...
           </p>
         ) : categories.length === 0 ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             No categories yet. Add your first one above.
           </p>
         ) : (
@@ -173,7 +173,7 @@ const Categories = () => {
             {categories.map((cat) => (
               <div
                 key={cat._id}
-                className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:flex-row sm:items-center"
+                className="flex flex-col justify-between gap-3 rounded-2xl border border-[#e9dfd4] bg-white p-4 sm:flex-row sm:items-center"
               >
                 <div>
                   <div className="flex items-center gap-2">
@@ -181,14 +181,14 @@ const Categories = () => {
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium capitalize ${
                         cat.status === "active"
-                          ? "bg-emerald-500/10 text-emerald-400"
-                          : "bg-slate-700 text-slate-400"
+                          ? "bg-emerald-100 text-emerald-800"
+                          : "bg-[#e3d7ca] text-[#6d5e52]"
                       }`}
                     >
                       {cat.status}
                     </span>
                   </div>
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="mt-1 text-sm text-[#837468]">
                     {cat.description}
                   </p>
                 </div>
@@ -196,14 +196,14 @@ const Categories = () => {
                 <div className="flex gap-2">
                   <button
                     onClick={() => startEdit(cat)}
-                    className="flex items-center gap-1.5 rounded-lg border border-slate-800 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:bg-slate-800"
+                    className="flex items-center gap-1.5 rounded-lg border border-[#e9dfd4] px-3 py-1.5 text-xs font-medium text-[#51463d] transition hover:bg-[#f3ede5]"
                   >
                     <FiEdit2 size={13} />
                     Edit
                   </button>
                   <button
                     onClick={() => deleteCategory(cat._id)}
-                    className="flex items-center gap-1.5 rounded-lg border border-red-500/20 px-3 py-1.5 text-xs font-medium text-red-400 transition hover:bg-red-500/10"
+                    className="flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-800 transition hover:bg-red-50"
                   >
                     <FiTrash2 size={13} />
                     Delete

@@ -58,7 +58,7 @@ const PropertyImageCarousel = ({
   return (
     <div className="w-full">
       <div
-        className={`group/carousel relative ${heightClass} overflow-hidden bg-slate-800 text-slate-500`}
+        className={`group/carousel relative ${heightClass} overflow-hidden bg-[#f3ede5] text-[#837468]`}
         role="region"
         aria-roledescription="carousel"
         aria-label={`${title} photos`}
@@ -109,7 +109,7 @@ const PropertyImageCarousel = ({
                     event.preventDefault();
                     goTo(currentIndex - 1);
                   }}
-                  className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-slate-950/70 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[#362a22]/80 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-[#4a382e]/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b87856]"
                   aria-label="Previous image"
                 >
                   <FiChevronLeft size={18} />
@@ -121,7 +121,7 @@ const PropertyImageCarousel = ({
                     event.preventDefault();
                     goTo(currentIndex + 1);
                   }}
-                  className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-slate-950/70 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-slate-950 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/15 bg-[#362a22]/80 text-white shadow-lg backdrop-blur transition hover:scale-105 hover:bg-[#4a382e]/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b87856]"
                   aria-label="Next image"
                 >
                   <FiChevronRight size={18} />
@@ -130,7 +130,7 @@ const PropertyImageCarousel = ({
             )}
 
             {hasMultipleImages && showDots && (
-              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-slate-950/65 px-2.5 py-1.5 backdrop-blur">
+              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-[#362a22]/80 px-2.5 py-1.5 backdrop-blur">
                 {imageList.map((_, index) => (
                   <button
                     key={index}
@@ -166,10 +166,10 @@ const PropertyImageCarousel = ({
               key={`${image}-thumbnail-${index}`}
               type="button"
               onClick={() => goTo(index)}
-              className={`h-16 w-24 shrink-0 overflow-hidden rounded-lg border-2 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
+              className={`h-16 w-24 shrink-0 overflow-hidden rounded-lg border-2 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#b87856] ${
                 currentIndex === index
-                  ? "border-indigo-400 opacity-100"
-                  : "border-slate-800 opacity-60 hover:opacity-100"
+                  ? "border-[#c89071] opacity-100"
+                  : "border-[#e9dfd4] opacity-60 hover:opacity-100"
               }`}
               aria-label={`Show image ${index + 1}`}
               aria-current={currentIndex === index ? "true" : undefined}

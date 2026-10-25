@@ -7,10 +7,10 @@ import Navbar from "../../components/Navbar";
 const Bar = ({ label, value, total, color }) => (
   <div>
     <div className="mb-1.5 flex justify-between text-xs">
-      <span className="text-slate-400">{label}</span>
-      <span className="font-medium text-slate-300">{value}</span>
+      <span className="text-[#6d5e52]">{label}</span>
+      <span className="font-medium text-[#51463d]">{value}</span>
     </div>
-    <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+    <div className="h-2 overflow-hidden rounded-full bg-[#f3ede5]">
       <div
         className={`h-full rounded-full ${color}`}
         style={{ width: `${total ? (value / total) * 100 : 0}%` }}
@@ -20,13 +20,13 @@ const Bar = ({ label, value, total, color }) => (
 );
 
 const statusStyles = {
-  pending: { text: "text-amber-400", bg: "bg-amber-500/10", Icon: FiClock },
+  pending: { text: "text-amber-800", bg: "bg-amber-100", Icon: FiClock },
   approved: {
-    text: "text-emerald-400",
-    bg: "bg-emerald-500/10",
+    text: "text-emerald-800",
+    bg: "bg-emerald-100",
     Icon: FiCheckCircle,
   },
-  rejected: { text: "text-red-400", bg: "bg-red-500/10", Icon: FiXCircle },
+  rejected: { text: "text-red-800", bg: "bg-red-100", Icon: FiXCircle },
 };
 
 const tabs = ["all", "pending", "approved", "rejected"];
@@ -105,18 +105,18 @@ const Analytics = () => {
   const r = stats?.rentalRequests;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">Analytics</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Platform statistics and all rental requests.
         </p>
 
         {stats && (
           <div className="mt-6 grid gap-5 md:grid-cols-2">
-            <div className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+            <div className="space-y-4 rounded-2xl border border-[#e9dfd4] bg-white p-5">
               <h2 className="font-semibold">Properties by status</h2>
               <Bar
                 label="Available"
@@ -134,11 +134,11 @@ const Analytics = () => {
                 label="Inactive"
                 value={p?.inactiveProperties || 0}
                 total={p?.totalProperties || 0}
-                color="bg-slate-500"
+                color="bg-[#a9b3a9]"
               />
             </div>
 
-            <div className="space-y-4 rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+            <div className="space-y-4 rounded-2xl border border-[#e9dfd4] bg-white p-5">
               <h2 className="font-semibold">Rental requests by status</h2>
               <Bar
                 label="Pending"
@@ -172,8 +172,8 @@ const Analytics = () => {
               onClick={() => setActiveTab(tab)}
               className={`rounded-xl px-4 py-2 text-sm font-medium capitalize transition ${
                 activeTab === tab
-                  ? "bg-indigo-600 text-white"
-                  : "border border-slate-800 bg-slate-900 text-slate-400 hover:text-white"
+                  ? "bg-[#a96343] text-white"
+                  : "border border-[#e9dfd4] bg-[#fffdfa] text-[#6d5e52] hover:text-[#382f28]"
               }`}
             >
               {tab}
@@ -182,11 +182,11 @@ const Analytics = () => {
         </div>
 
         {loading ? (
-          <p className="mt-8 text-center text-sm text-slate-500">
+          <p className="mt-8 text-center text-sm text-[#837468]">
             Loading requests...
           </p>
         ) : requests.length === 0 ? (
-          <p className="mt-8 text-center text-sm text-slate-500">
+          <p className="mt-8 text-center text-sm text-[#837468]">
             No rental requests found.
           </p>
         ) : (
@@ -196,11 +196,11 @@ const Analytics = () => {
               return (
                 <div
                   key={req._id}
-                  className="flex flex-col justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:flex-row sm:items-center"
+                  className="flex flex-col justify-between gap-3 rounded-2xl border border-[#e9dfd4] bg-white p-4 sm:flex-row sm:items-center"
                 >
                   <div>
                     <h3 className="font-semibold">{req.propertyId?.title}</h3>
-                    <p className="mt-1 text-xs text-slate-500">
+                    <p className="mt-1 text-xs text-[#837468]">
                       Requested by {req.userId?.fullName} • Owner:{" "}
                       {req.ownerId?.fullName}
                     </p>

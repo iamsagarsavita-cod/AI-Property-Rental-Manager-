@@ -14,7 +14,7 @@ import Navbar from "../../components/Navbar";
 import PropertyImageCarousel from "../../components/PropertyImageCarousel";
 
 const PropertyCard = ({ property }) => (
-  <article className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60 transition hover:border-indigo-500/50">
+  <article className="overflow-hidden rounded-2xl border border-[#e9dfd4] bg-white transition hover:border-[#c89071]">
     <PropertyImageCarousel
       images={property.images}
       title={property.title}
@@ -27,25 +27,25 @@ const PropertyCard = ({ property }) => (
       to={`/user/properties/${property._id}`}
       className="group block p-4"
     >
-      <span className="rounded-full bg-indigo-500/10 px-2.5 py-1 text-[11px] font-medium text-indigo-400">
+      <span className="rounded-full bg-[#f5e9df] px-2.5 py-1 text-[11px] font-medium text-[#a96343]">
         {property.categoryId?.categoryName || "Property"}
       </span>
 
-      <h3 className="mt-3 font-semibold text-white transition group-hover:text-indigo-400">
+      <h3 className="mt-3 font-semibold text-[#382f28] transition group-hover:text-[#8f5035]">
         {property.title}
       </h3>
 
-      <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+      <p className="mt-1 flex items-center gap-1.5 text-xs text-[#837468]">
         <FiMapPin size={13} />
         {property.location}
       </p>
 
-      <div className="mt-3 flex items-center justify-between border-t border-slate-800 pt-3">
-        <p className="text-sm font-bold text-white">
+      <div className="mt-3 flex items-center justify-between border-t border-[#e9dfd4] pt-3">
+        <p className="text-sm font-bold text-[#382f28]">
           ₹{property.price?.toLocaleString()}
-          <span className="text-xs font-normal text-slate-500">/mo</span>
+          <span className="text-xs font-normal text-[#837468]">/mo</span>
         </p>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-[#837468]">
           {property.bedRooms} Bed • {property.bathRooms} Bath
         </p>
       </div>
@@ -191,18 +191,18 @@ const Properties = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">Browse Properties</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Find a place that feels like home.
         </p>
 
         {/* AI Search */}
-        <div className="mt-6 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-4">
-          <p className="flex items-center gap-2 text-sm font-medium text-indigo-300">
+        <div className="mt-6 rounded-2xl border border-[#e7cdbd] bg-[#a96343]/5 p-4">
+          <p className="flex items-center gap-2 text-sm font-medium text-[#a96343]">
             <FiZap size={15} />
             Describe what you need, AI will set the filters
           </p>
@@ -212,12 +212,12 @@ const Properties = () => {
               placeholder="e.g. 2BHK near Andheri under 20000"
               value={requirement}
               onChange={(e) => setRequirement(e.target.value)}
-              className="flex-1 rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+              className="flex-1 rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-2.5 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
             />
             <button
               onClick={analyzeWithAI}
               disabled={analyzing}
-              className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold transition hover:bg-indigo-500 disabled:opacity-60"
+              className="rounded-xl bg-[#a96343] px-5 py-2.5 text-sm font-semibold transition hover:bg-[#8f5035] disabled:opacity-60"
             >
               {analyzing ? "Analyzing..." : "Find with AI"}
             </button>
@@ -225,16 +225,16 @@ const Properties = () => {
         </div>
 
         {/* Search + Filter Bar */}
-        <div className="mt-6 grid gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="mt-6 grid gap-3 rounded-2xl border border-[#e9dfd4] bg-white p-4 sm:grid-cols-2 lg:grid-cols-5">
           <div className="relative lg:col-span-2">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
             <input
               type="text"
               name="search"
               placeholder="Search by title or location..."
               value={filters.search}
               onChange={changeFilter}
-              className="w-full rounded-xl border border-slate-800 bg-slate-950 py-2.5 pl-11 pr-4 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+              className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] py-2.5 pl-11 pr-4 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
             />
           </div>
 
@@ -242,7 +242,7 @@ const Properties = () => {
             name="categoryId"
             value={filters.categoryId}
             onChange={changeFilter}
-            className="rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm text-slate-300 outline-none focus:border-indigo-500"
+            className="rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-2.5 text-sm text-[#51463d] outline-none focus:border-[#a96343]"
           >
             <option value="">All Categories</option>
             {categories.map((cat) => (
@@ -258,7 +258,7 @@ const Properties = () => {
             placeholder="Min Price"
             value={filters.minPrice}
             onChange={changeFilter}
-            className="rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+            className="rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-2.5 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
           />
 
           <input
@@ -267,16 +267,16 @@ const Properties = () => {
             placeholder="Max Price"
             value={filters.maxPrice}
             onChange={changeFilter}
-            className="rounded-xl border border-slate-800 bg-slate-950 px-4 py-2.5 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+            className="rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-2.5 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
           />
         </div>
 
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading properties...
           </p>
         ) : properties.length === 0 ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             No properties found. Try changing your filters.
           </p>
         ) : (
@@ -294,17 +294,17 @@ const Properties = () => {
             <button
               disabled={page === 1}
               onClick={() => setPage((p) => p - 1)}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900 text-slate-400 disabled:opacity-40"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#e9dfd4] bg-[#fffdfa] text-[#6d5e52] disabled:opacity-40"
             >
               <FiChevronLeft size={16} />
             </button>
-            <span className="text-sm text-slate-400">
+            <span className="text-sm text-[#6d5e52]">
               Page {page} of {totalPages}
             </span>
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}
-              className="flex h-9 w-9 items-center justify-center rounded-xl border border-slate-800 bg-slate-900 text-slate-400 disabled:opacity-40"
+              className="flex h-9 w-9 items-center justify-center rounded-xl border border-[#e9dfd4] bg-[#fffdfa] text-[#6d5e52] disabled:opacity-40"
             >
               <FiChevronRight size={16} />
             </button>

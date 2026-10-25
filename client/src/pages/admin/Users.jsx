@@ -6,8 +6,8 @@ import Navbar from "../../components/Navbar";
 
 const roleStyles = {
   user: "bg-sky-500/10 text-sky-400",
-  owner: "bg-amber-500/10 text-amber-400",
-  admin: "bg-indigo-500/10 text-indigo-400",
+  owner: "bg-amber-100 text-amber-800",
+  admin: "bg-[#f5e9df] text-[#a96343]",
 };
 
 const tabs = ["all", "user", "owner", "admin"];
@@ -55,12 +55,12 @@ const Users = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">Manage Users</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           View and remove users and property owners.
         </p>
 
@@ -72,8 +72,8 @@ const Users = () => {
               onClick={() => setActiveTab(tab)}
               className={`rounded-xl px-4 py-2 text-sm font-medium capitalize transition ${
                 activeTab === tab
-                  ? "bg-indigo-600 text-white"
-                  : "border border-slate-800 bg-slate-900 text-slate-400 hover:text-white"
+                  ? "bg-[#a96343] text-white"
+                  : "border border-[#e9dfd4] bg-[#fffdfa] text-[#6d5e52] hover:text-[#382f28]"
               }`}
             >
               {tab}
@@ -82,17 +82,17 @@ const Users = () => {
         </div>
 
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading users...
           </p>
         ) : users.length === 0 ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             No users found.
           </p>
         ) : (
-          <div className="mt-5 overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/60">
+          <div className="mt-5 overflow-x-auto rounded-2xl border border-[#e9dfd4] bg-white">
             <table className="w-full min-w-150 text-left text-sm">
-              <thead className="border-b border-slate-800 text-xs uppercase tracking-wide text-slate-500">
+              <thead className="border-b border-[#e9dfd4] text-xs uppercase tracking-wide text-[#837468]">
                 <tr>
                   <th className="px-4 py-3">User</th>
                   <th className="px-4 py-3">Phone</th>
@@ -105,11 +105,11 @@ const Users = () => {
                 {users.map((user) => (
                   <tr
                     key={user._id}
-                    className="border-b border-slate-800/60 last:border-0"
+                    className="border-b border-[#e9dfd4] last:border-0"
                   >
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-slate-800 text-slate-500">
+                        <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-[#f3ede5] text-[#837468]">
                           {user.profileImage ? (
                             <img
                               src={imageUrl(user.profileImage)}
@@ -122,11 +122,11 @@ const Users = () => {
                         </div>
                         <div>
                           <p className="font-medium">{user.fullName}</p>
-                          <p className="text-xs text-slate-500">{user.email}</p>
+                          <p className="text-xs text-[#837468]">{user.email}</p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-400">{user.phone}</td>
+                    <td className="px-4 py-3 text-[#6d5e52]">{user.phone}</td>
                     <td className="px-4 py-3">
                       <span
                         className={`rounded-full px-2.5 py-1 text-[11px] font-medium capitalize ${roleStyles[user.role]}`}
@@ -138,7 +138,7 @@ const Users = () => {
                       {user.role !== "admin" && (
                         <button
                           onClick={() => deleteUser(user._id)}
-                          className="inline-flex items-center gap-1.5 rounded-lg border border-red-500/20 px-3 py-1.5 text-xs font-medium text-red-400 transition hover:bg-red-500/10"
+                          className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-1.5 text-xs font-medium text-red-800 transition hover:bg-red-50"
                         >
                           <FiTrash2 size={13} />
                           Delete

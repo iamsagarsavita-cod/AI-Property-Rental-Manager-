@@ -7,9 +7,9 @@ import Navbar from "../../components/Navbar";
 import PropertyImageCarousel from "../../components/PropertyImageCarousel";
 
 const statusStyles = {
-  available: "bg-emerald-500/10 text-emerald-400",
-  rented: "bg-amber-500/10 text-amber-400",
-  inactive: "bg-slate-700 text-slate-400",
+  available: "bg-emerald-100 text-emerald-800",
+  rented: "bg-amber-100 text-amber-800",
+  inactive: "bg-[#e3d7ca] text-[#6d5e52]",
 };
 
 const MyProperties = () => {
@@ -51,21 +51,21 @@ const MyProperties = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h1 className="text-2xl font-bold">My Properties</h1>
-            <p className="mt-1 text-sm text-slate-400">
+            <p className="mt-1 text-sm text-[#6d5e52]">
               Manage the properties you've listed.
             </p>
           </div>
 
           <Link
             to="/owner/properties/add"
-            className="flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold transition hover:bg-indigo-500"
+            className="flex items-center gap-2 rounded-xl bg-[#a96343] px-4 py-2.5 text-sm font-semibold transition hover:bg-[#8f5035]"
           >
             <FiPlus size={16} />
             Add Property
@@ -73,11 +73,11 @@ const MyProperties = () => {
         </div>
 
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading your properties...
           </p>
         ) : properties.length === 0 ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             You haven't listed any properties yet.
           </p>
         ) : (
@@ -85,7 +85,7 @@ const MyProperties = () => {
             {properties.map((property) => (
               <div
                 key={property._id}
-                className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60"
+                className="overflow-hidden rounded-2xl border border-[#e9dfd4] bg-white"
               >
                 <PropertyImageCarousel
                   images={property.images}
@@ -104,22 +104,22 @@ const MyProperties = () => {
 
                   <h3 className="mt-3 font-semibold">{property.title}</h3>
 
-                  <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                  <p className="mt-1 flex items-center gap-1.5 text-xs text-[#837468]">
                     <FiMapPin size={13} />
                     {property.location}
                   </p>
 
                   <p className="mt-2 text-sm font-bold">
                     ₹{property.price.toLocaleString()}
-                    <span className="text-xs font-normal text-slate-500">
+                    <span className="text-xs font-normal text-[#837468]">
                       /mo
                     </span>
                   </p>
 
-                  <div className="mt-4 flex gap-2 border-t border-slate-800 pt-3">
+                  <div className="mt-4 flex gap-2 border-t border-[#e9dfd4] pt-3">
                     <Link
                       to={`/owner/properties/edit/${property._id}`}
-                      className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-slate-800 py-2 text-xs font-medium text-slate-300 transition hover:bg-slate-800"
+                      className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-[#e9dfd4] py-2 text-xs font-medium text-[#51463d] transition hover:bg-[#f3ede5]"
                     >
                       <FiEdit2 size={13} />
                       Edit
@@ -127,7 +127,7 @@ const MyProperties = () => {
 
                     <button
                       onClick={() => deleteProperty(property._id)}
-                      className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-red-500/20 py-2 text-xs font-medium text-red-400 transition hover:bg-red-500/10"
+                      className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-red-200 py-2 text-xs font-medium text-red-800 transition hover:bg-red-50"
                     >
                       <FiTrash2 size={13} />
                       Delete

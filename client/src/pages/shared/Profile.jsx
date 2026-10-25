@@ -127,9 +127,9 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white">
+      <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
         <Navbar />
-        <p className="py-20 text-center text-sm text-slate-500">
+        <p className="py-20 text-center text-sm text-[#837468]">
           Loading profile...
         </p>
       </div>
@@ -137,22 +137,22 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">My Profile</h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Manage your account information.
         </p>
 
         <form
           onSubmit={submitHandler}
-          className="mt-6 space-y-5 rounded-2xl border border-slate-800 bg-slate-900/60 p-6"
+          className="mt-6 space-y-5 rounded-2xl border border-[#e9dfd4] bg-white p-6"
         >
           {/* Profile Image */}
           <div className="flex items-center gap-4">
-            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border border-slate-700 bg-slate-800 text-slate-500">
+            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-2xl border border-[#ddcfc1] bg-[#f3ede5] text-[#837468]">
               {preview ? (
                 <img
                   src={preview}
@@ -180,12 +180,12 @@ const Profile = () => {
               />
               <label
                 htmlFor="profileImage"
-                className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-indigo-400 hover:text-indigo-300"
+                className="flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#a96343] hover:text-[#8f5035]"
               >
                 <FiCamera size={15} />
                 Change photo
               </label>
-              <p className="mt-1 text-xs text-slate-600">
+              <p className="mt-1 text-xs text-[#9b8b7d]">
                 JPG, PNG, WEBP up to 2MB
               </p>
             </div>
@@ -193,94 +193,94 @@ const Profile = () => {
 
           {/* Role badge */}
           <div>
-            <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium capitalize text-indigo-400">
+            <span className="rounded-full bg-[#f5e9df] px-3 py-1 text-xs font-medium capitalize text-[#a96343]">
               {role}
             </span>
           </div>
 
           {/* Full Name */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-2 block text-sm font-medium text-[#51463d]">
               Full name
             </label>
             <div className="relative">
-              <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+              <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
               <input
                 type="text"
                 name="fullName"
                 value={formData.fullName}
                 onChange={changeHandler}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 py-3 pl-11 pr-4 text-sm outline-none focus:border-indigo-500"
+                className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] py-3 pl-11 pr-4 text-sm outline-none focus:border-[#a96343]"
               />
             </div>
           </div>
 
           {/* Email */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-2 block text-sm font-medium text-[#51463d]">
               Email address
             </label>
             <div className="relative">
-              <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+              <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={changeHandler}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 py-3 pl-11 pr-4 text-sm outline-none focus:border-indigo-500"
+                className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] py-3 pl-11 pr-4 text-sm outline-none focus:border-[#a96343]"
               />
             </div>
           </div>
 
           {/* Phone */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-2 block text-sm font-medium text-[#51463d]">
               Phone number
             </label>
             <div className="relative">
-              <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+              <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={changeHandler}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 py-3 pl-11 pr-4 text-sm outline-none focus:border-indigo-500"
+                className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] py-3 pl-11 pr-4 text-sm outline-none focus:border-[#a96343]"
               />
             </div>
           </div>
 
           {/* Bio */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-2 block text-sm font-medium text-[#51463d]">
               Bio
-              <span className="ml-2 text-xs text-slate-600">Optional</span>
+              <span className="ml-2 text-xs text-[#9b8b7d]">Optional</span>
             </label>
             <textarea
               rows="3"
               name="bio"
               value={formData.bio}
               onChange={changeHandler}
-              className="w-full resize-none rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm outline-none focus:border-indigo-500"
+              className="w-full resize-none rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-3 text-sm outline-none focus:border-[#a96343]"
             />
           </div>
 
           {/* New Password */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-2 block text-sm font-medium text-[#51463d]">
               New password
-              <span className="ml-2 text-xs text-slate-600">
+              <span className="ml-2 text-xs text-[#9b8b7d]">
                 Leave blank to keep current
               </span>
             </label>
             <div className="relative">
-              <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+              <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
               <input
                 type="password"
                 name="password"
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={changeHandler}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 py-3 pl-11 pr-4 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+                className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] py-3 pl-11 pr-4 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
               />
             </div>
           </div>
@@ -288,22 +288,22 @@ const Profile = () => {
           <button
             type="submit"
             disabled={saving}
-            className="w-full rounded-xl bg-indigo-600 py-3.5 text-sm font-semibold transition hover:bg-indigo-500 disabled:opacity-60"
+            className="w-full rounded-xl bg-[#a96343] py-3.5 text-sm font-semibold transition hover:bg-[#8f5035] disabled:opacity-60"
           >
             {saving ? "Saving..." : "Save Changes"}
           </button>
         </form>
 
         {/* Danger Zone */}
-        <div className="mt-6 rounded-2xl border border-red-500/20 bg-red-500/5 p-6">
-          <h2 className="text-sm font-semibold text-red-400">Danger Zone</h2>
-          <p className="mt-1 text-xs text-slate-500">
+        <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-6">
+          <h2 className="text-sm font-semibold text-red-800">Danger Zone</h2>
+          <p className="mt-1 text-xs text-[#837468]">
             Deleting your account is permanent and cannot be undone.
           </p>
 
           <button
             onClick={deleteAccount}
-            className="mt-4 flex items-center gap-2 rounded-xl border border-red-500/30 px-4 py-2.5 text-sm font-medium text-red-400 transition hover:bg-red-500/10"
+            className="mt-4 flex items-center gap-2 rounded-xl border border-red-200 px-4 py-2.5 text-sm font-medium text-red-800 transition hover:bg-red-50"
           >
             <FiTrash2 size={15} />
             Delete Account

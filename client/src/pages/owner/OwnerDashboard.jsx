@@ -61,19 +61,19 @@ const OwnerDashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">
           Welcome back{name ? `, ${name.split(" ")[0]}` : ""} 👋
         </h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Here's how your properties are doing.
         </p>
 
         {loading ? (
-          <p className="mt-10 text-center text-sm text-slate-500">
+          <p className="mt-10 text-center text-sm text-[#837468]">
             Loading dashboard...
           </p>
         ) : (
@@ -83,13 +83,13 @@ const OwnerDashboard = () => {
               {stats.map(({ label, value, Icon }) => (
                 <div
                   key={label}
-                  className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4"
+                  className="rounded-2xl border border-[#e9dfd4] bg-white p-4"
                 >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#f5e9df] text-[#a96343]">
                     <Icon size={16} />
                   </div>
                   <p className="mt-3 text-2xl font-bold">{value}</p>
-                  <p className="text-xs text-slate-500">{label}</p>
+                  <p className="text-xs text-[#837468]">{label}</p>
                 </div>
               ))}
             </div>
@@ -98,16 +98,16 @@ const OwnerDashboard = () => {
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
               <Link
                 to="/owner/properties/add"
-                className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 transition hover:border-indigo-500/50"
+                className="flex items-center gap-3 rounded-2xl border border-[#e9dfd4] bg-white p-4 transition hover:border-[#c89071]"
               >
-                <FiPlus className="text-indigo-400" />
+                <FiPlus className="text-[#a96343]" />
                 <span className="text-sm font-medium">Add a new property</span>
               </Link>
               <Link
                 to="/owner/properties"
-                className="flex items-center gap-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-4 transition hover:border-indigo-500/50"
+                className="flex items-center gap-3 rounded-2xl border border-[#e9dfd4] bg-white p-4 transition hover:border-[#c89071]"
               >
-                <FiGrid className="text-indigo-400" />
+                <FiGrid className="text-[#a96343]" />
                 <span className="text-sm font-medium">
                   Manage my properties
                 </span>
@@ -119,7 +119,7 @@ const OwnerDashboard = () => {
               Requests waiting for you
             </h2>
             {pendingRequests.length === 0 ? (
-              <p className="text-sm text-slate-500">
+              <p className="text-sm text-[#837468]">
                 No pending requests right now.
               </p>
             ) : (
@@ -127,18 +127,18 @@ const OwnerDashboard = () => {
                 {pendingRequests.slice(0, 3).map((r) => (
                   <div
                     key={r._id}
-                    className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-900/60 p-4"
+                    className="flex items-center justify-between rounded-2xl border border-[#e9dfd4] bg-white p-4"
                   >
                     <div>
                       <p className="font-medium">{r.propertyId?.title}</p>
-                      <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+                      <p className="mt-1 flex items-center gap-1.5 text-xs text-[#837468]">
                         <FiUser size={12} />
                         {r.userId?.fullName}
                       </p>
                     </div>
                     <Link
                       to="/owner/requests"
-                      className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold transition hover:bg-indigo-500"
+                      className="rounded-lg bg-[#a96343] px-3 py-1.5 text-xs font-semibold transition hover:bg-[#8f5035]"
                     >
                       Review
                     </Link>

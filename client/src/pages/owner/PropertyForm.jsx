@@ -159,36 +159,36 @@ const PropertyForm = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <Navbar />
 
       <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold">
           {isEditMode ? "Edit Property" : "Add Property"}
         </h1>
-        <p className="mt-1 text-sm text-slate-400">
+        <p className="mt-1 text-sm text-[#6d5e52]">
           Fill in the details below to{" "}
           {isEditMode ? "update your" : "list a new"} property.
         </p>
 
         <form
           onSubmit={submitHandler}
-          className="mt-6 space-y-5 rounded-2xl border border-slate-800 bg-slate-900/60 p-6"
+          className="mt-6 space-y-5 rounded-2xl border border-[#e9dfd4] bg-white p-6"
         >
           {/* Title */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-2 block text-sm font-medium text-[#51463d]">
               Property Title
             </label>
             <div className="relative">
-              <FiHome className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+              <FiHome className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
               <input
                 type="text"
                 name="title"
                 placeholder="e.g. Sunny 2BHK Apartment"
                 value={formData.title}
                 onChange={changeHandler}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 py-3 pl-11 pr-4 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+                className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] py-3 pl-11 pr-4 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
               />
             </div>
           </div>
@@ -196,16 +196,16 @@ const PropertyForm = () => {
           {/* Category + Location */}
           <div className="grid gap-5 sm:grid-cols-2">
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
+              <label className="mb-2 block text-sm font-medium text-[#51463d]">
                 Category
               </label>
               <div className="relative">
-                <FiTag className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                <FiTag className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
                 <select
                   name="categoryId"
                   value={formData.categoryId}
                   onChange={changeHandler}
-                  className="w-full rounded-xl border border-slate-800 bg-slate-950 py-3 pl-11 pr-4 text-sm text-slate-300 outline-none focus:border-indigo-500"
+                  className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] py-3 pl-11 pr-4 text-sm text-[#51463d] outline-none focus:border-[#a96343]"
                 >
                   <option value="">Select Category</option>
                   {categories.map((cat) => (
@@ -218,18 +218,18 @@ const PropertyForm = () => {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
+              <label className="mb-2 block text-sm font-medium text-[#51463d]">
                 Location
               </label>
               <div className="relative">
-                <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                <FiMapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
                 <input
                   type="text"
                   name="location"
                   placeholder="e.g. Andheri West, Mumbai"
                   value={formData.location}
                   onChange={changeHandler}
-                  className="w-full rounded-xl border border-slate-800 bg-slate-950 py-3 pl-11 pr-4 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+                  className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] py-3 pl-11 pr-4 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
                 />
               </div>
             </div>
@@ -238,7 +238,7 @@ const PropertyForm = () => {
           {/* Price, Bedrooms, Bathrooms, Area */}
           <div className="grid gap-5 sm:grid-cols-4">
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
+              <label className="mb-2 block text-sm font-medium text-[#51463d]">
                 Price/mo
               </label>
               <input
@@ -247,11 +247,11 @@ const PropertyForm = () => {
                 placeholder="18000"
                 value={formData.price}
                 onChange={changeHandler}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+                className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-3 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
               />
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
+              <label className="mb-2 block text-sm font-medium text-[#51463d]">
                 Bedrooms
               </label>
               <input
@@ -260,11 +260,11 @@ const PropertyForm = () => {
                 placeholder="2"
                 value={formData.bedRooms}
                 onChange={changeHandler}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+                className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-3 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
               />
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
+              <label className="mb-2 block text-sm font-medium text-[#51463d]">
                 Bathrooms
               </label>
               <input
@@ -273,11 +273,11 @@ const PropertyForm = () => {
                 placeholder="2"
                 value={formData.bathRooms}
                 onChange={changeHandler}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+                className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-3 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
               />
             </div>
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
+              <label className="mb-2 block text-sm font-medium text-[#51463d]">
                 Area (sqft)
               </label>
               <input
@@ -286,7 +286,7 @@ const PropertyForm = () => {
                 placeholder="950"
                 value={formData.area}
                 onChange={changeHandler}
-                className="w-full rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+                className="w-full rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-3 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
               />
             </div>
           </div>
@@ -294,14 +294,14 @@ const PropertyForm = () => {
           {/* Description */}
           <div>
             <div className="mb-2 flex items-center justify-between">
-              <label className="block text-sm font-medium text-slate-300">
+              <label className="block text-sm font-medium text-[#51463d]">
                 Description
               </label>
               <button
                 type="button"
                 onClick={generateDescription}
                 disabled={generating}
-                className="flex items-center gap-1.5 rounded-lg bg-indigo-500/10 px-3 py-1.5 text-xs font-semibold text-indigo-400 transition hover:bg-indigo-500/20 disabled:opacity-60"
+                className="flex items-center gap-1.5 rounded-lg bg-[#f5e9df] px-3 py-1.5 text-xs font-semibold text-[#a96343] transition hover:bg-[#8f5035]/20 disabled:opacity-60"
               >
                 <FiZap size={12} />
                 {generating ? "Generating..." : "Generate with AI"}
@@ -313,20 +313,20 @@ const PropertyForm = () => {
               placeholder="Describe the property..."
               value={formData.description}
               onChange={changeHandler}
-              className="w-full resize-none rounded-xl border border-slate-800 bg-slate-950 px-4 py-3 text-sm outline-none placeholder:text-slate-600 focus:border-indigo-500"
+              className="w-full resize-none rounded-xl border border-[#e9dfd4] bg-[#f7f3ed] px-4 py-3 text-sm outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
             />
           </div>
 
           {/* Images */}
           <div>
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-2 block text-sm font-medium text-[#51463d]">
               Property Images
-              <span className="ml-2 text-xs text-slate-600">
+              <span className="ml-2 text-xs text-[#9b8b7d]">
                 Up to 5 images
               </span>
             </label>
 
-            <label className="flex h-28 cursor-pointer items-center justify-center rounded-xl border border-dashed border-slate-700 bg-slate-950 text-slate-500 transition hover:border-indigo-500">
+            <label className="flex h-28 cursor-pointer items-center justify-center rounded-xl border border-dashed border-[#ddcfc1] bg-[#f7f3ed] text-[#837468] transition hover:border-[#c89071]">
               <input
                 type="file"
                 multiple
@@ -345,7 +345,7 @@ const PropertyForm = () => {
                 {existingImages.map((img, i) => (
                   <div
                     key={`existing-${i}`}
-                    className="h-16 w-16 overflow-hidden rounded-lg bg-slate-800"
+                    className="h-16 w-16 overflow-hidden rounded-lg bg-[#f3ede5]"
                   >
                     <img
                       src={imageUrl(img)}
@@ -358,7 +358,7 @@ const PropertyForm = () => {
                 {newImages.map((file, i) => (
                   <div
                     key={`new-${i}`}
-                    className="relative h-16 w-16 overflow-hidden rounded-lg bg-slate-800"
+                    className="relative h-16 w-16 overflow-hidden rounded-lg bg-[#f3ede5]"
                   >
                     <img
                       src={URL.createObjectURL(file)}
@@ -381,7 +381,7 @@ const PropertyForm = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-xl bg-indigo-600 py-3.5 text-sm font-semibold transition hover:bg-indigo-500 disabled:opacity-60"
+            className="w-full rounded-xl bg-[#a96343] py-3.5 text-sm font-semibold transition hover:bg-[#8f5035] disabled:opacity-60"
           >
             {loading ? "Saving..." : "Save Property"}
           </button>

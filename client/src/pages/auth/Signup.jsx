@@ -104,11 +104,11 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-[#f7f3ed] text-[#382f28]">
       <div className="grid min-h-screen lg:grid-cols-2">
         {/* Left */}
         <div className="relative hidden overflow-hidden lg:flex">
-          <div className="absolute inset-0 bg-linear-to-br from-violet-700 via-indigo-700 to-slate-950" />
+          <div className="absolute inset-0 bg-linear-to-br from-[#b87856] via-[#89583f] to-[#4a382e]" />
 
           <div className="absolute -right-20 top-20 h-80 w-80 rounded-full bg-cyan-400/20 blur-3xl" />
           <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-fuchsia-500/20 blur-3xl" />
@@ -150,24 +150,24 @@ const Register = () => {
           <div className="w-full max-w-md">
             {/* Mobile Logo */}
             <div className="mb-8 flex items-center gap-3 lg:hidden">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600 font-bold">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#a96343] font-bold">
                 PR
               </div>
 
               <div>
                 <h2 className="font-bold">Property Rental Manager</h2>
-                <p className="text-xs text-slate-500">Find. Rent. Manage.</p>
+                <p className="text-xs text-[#837468]">Find. Rent. Manage.</p>
               </div>
             </div>
 
             <div className="mb-7">
-              <p className="mb-2 text-sm font-medium text-indigo-400">
+              <p className="mb-2 text-sm font-medium text-[#a96343]">
                 Get started
               </p>
 
               <h2 className="text-3xl font-bold">Create your account</h2>
 
-              <p className="mt-3 text-sm leading-6 text-slate-400">
+              <p className="mt-3 text-sm leading-6 text-[#6d5e52]">
                 Tell us who you are and we'll set up your dashboard.
               </p>
             </div>
@@ -175,7 +175,7 @@ const Register = () => {
             <form className="space-y-4" onSubmit={submitHandler}>
               {/* Role Selection */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-[#51463d]">
                   I want to
                 </label>
 
@@ -185,8 +185,8 @@ const Register = () => {
                     onClick={() => selectRole("user")}
                     className={`flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-sm font-medium transition ${
                       formData.role === "user"
-                        ? "border-indigo-500 bg-indigo-500/10 text-indigo-300"
-                        : "border-slate-800 bg-slate-900/70 text-slate-400 hover:border-slate-700"
+                        ? "border-[#c89071] bg-[#f5e9df] text-[#a96343]"
+                        : "border-[#e9dfd4] bg-[#fffdfa] text-[#6d5e52] hover:border-[#ddcfc1]"
                     }`}
                   >
                     <FiHome size={16} />
@@ -198,8 +198,8 @@ const Register = () => {
                     onClick={() => selectRole("owner")}
                     className={`flex items-center justify-center gap-2 rounded-2xl border py-3.5 text-sm font-medium transition ${
                       formData.role === "user"
-                        ? "border-indigo-500 bg-indigo-500/10 text-indigo-300"
-                        : "border-slate-800 bg-slate-900/70 text-slate-400 hover:border-slate-700"
+                        ? "border-[#c89071] bg-[#f5e9df] text-[#a96343]"
+                        : "border-[#e9dfd4] bg-[#fffdfa] text-[#6d5e52] hover:border-[#ddcfc1]"
                     }`}
                   >
                     <FiKey size={16} />
@@ -210,7 +210,7 @@ const Register = () => {
 
               {/* Profile Image */}
               <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-dashed border-slate-700 bg-slate-900 text-slate-500">
+                <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-dashed border-[#ddcfc1] bg-[#fffdfa] text-[#837468]">
                   {preview ? (
                     <img
                       src={preview}
@@ -233,12 +233,12 @@ const Register = () => {
 
                   <label
                     htmlFor="profileImage"
-                    className="cursor-pointer text-sm font-semibold text-indigo-400 hover:text-indigo-300"
+                    className="cursor-pointer text-sm font-semibold text-[#a96343] hover:text-[#8f5035]"
                   >
                     Upload profile photo
                   </label>
 
-                  <p className="mt-1 text-xs text-slate-600">
+                  <p className="mt-1 text-xs text-[#9b8b7d]">
                     JPG, PNG, WEBP up to 2MB
                   </p>
                 </div>
@@ -246,17 +246,17 @@ const Register = () => {
 
               {/* Full Name */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-[#51463d]">
                   Full name
                 </label>
 
                 <div className="relative">
-                  <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <FiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
 
                   <input
                     type="text"
                     placeholder="Enter your full name"
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    className="w-full rounded-2xl border border-[#e9dfd4] bg-[#fffdfa] py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-[#9b8b7d] focus:border-[#a96343] focus:ring-4 focus:ring-[#a96343]/10"
                     value={formData.fullName}
                     name="fullName"
                     onChange={changeHandler}
@@ -266,17 +266,17 @@ const Register = () => {
 
               {/* Email */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-[#51463d]">
                   Email address
                 </label>
 
                 <div className="relative">
-                  <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
 
                   <input
                     type="email"
                     placeholder="you@example.com"
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    className="w-full rounded-2xl border border-[#e9dfd4] bg-[#fffdfa] py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-[#9b8b7d] focus:border-[#a96343] focus:ring-4 focus:ring-[#a96343]/10"
                     value={formData.email}
                     name="email"
                     onChange={changeHandler}
@@ -286,17 +286,17 @@ const Register = () => {
 
               {/* Phone */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-[#51463d]">
                   Phone number
                 </label>
 
                 <div className="relative">
-                  <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <FiPhone className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
 
                   <input
                     type="tel"
                     placeholder="Enter phone number"
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    className="w-full rounded-2xl border border-[#e9dfd4] bg-[#fffdfa] py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-[#9b8b7d] focus:border-[#a96343] focus:ring-4 focus:ring-[#a96343]/10"
                     value={formData.phone}
                     name="phone"
                     onChange={changeHandler}
@@ -306,17 +306,17 @@ const Register = () => {
 
               {/* Password */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-[#51463d]">
                   Password
                 </label>
 
                 <div className="relative">
-                  <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                  <FiLock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#837468]" />
 
                   <input
                     type="password"
                     placeholder="Create a strong password"
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-900/70 py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                    className="w-full rounded-2xl border border-[#e9dfd4] bg-[#fffdfa] py-3.5 pl-11 pr-4 text-sm outline-none transition placeholder:text-[#9b8b7d] focus:border-[#a96343] focus:ring-4 focus:ring-[#a96343]/10"
                     value={formData.password}
                     name="password"
                     onChange={changeHandler}
@@ -326,15 +326,15 @@ const Register = () => {
 
               {/* Bio */}
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-300">
+                <label className="mb-2 block text-sm font-medium text-[#51463d]">
                   Short bio
-                  <span className="ml-2 text-xs text-slate-600">Optional</span>
+                  <span className="ml-2 text-xs text-[#9b8b7d]">Optional</span>
                 </label>
 
                 <textarea
                   rows="3"
                   placeholder="Tell us a little about yourself..."
-                  className="w-full resize-none rounded-2xl border border-slate-800 bg-slate-900/70 px-4 py-3.5 text-sm outline-none transition placeholder:text-slate-600 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10"
+                  className="w-full resize-none rounded-2xl border border-[#e9dfd4] bg-[#fffdfa] px-4 py-3.5 text-sm outline-none transition placeholder:text-[#9b8b7d] focus:border-[#a96343] focus:ring-4 focus:ring-[#a96343]/10"
                   value={formData.bio}
                   name="bio"
                   onChange={changeHandler}
@@ -344,18 +344,18 @@ const Register = () => {
               {/* Button */}
               <button
                 type="submit"
-                className="group mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-indigo-600 py-3.5 text-sm font-semibold transition hover:bg-indigo-500 active:scale-[0.99]"
+                className="group mt-2 flex w-full items-center justify-center gap-2 rounded-2xl bg-[#a96343] py-3.5 text-sm font-semibold transition hover:bg-[#8f5035] active:scale-[0.99]"
               >
                 Create Account
                 <FiArrowRight className="transition-transform group-hover:translate-x-1" />
               </button>
             </form>
 
-            <p className="mt-7 text-center text-sm text-slate-500">
+            <p className="mt-7 text-center text-sm text-[#837468]">
               Already have an account?{" "}
               <Link
                 to="/login"
-                className="font-semibold text-indigo-400 hover:text-indigo-300"
+                className="font-semibold text-[#a96343] hover:text-[#8f5035]"
               >
                 Sign in
               </Link>
