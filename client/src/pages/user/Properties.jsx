@@ -14,6 +14,113 @@ import api from "../../services/api";
 import { imageUrl } from "../../services/api";
 import Navbar from "../../components/Navbar";
 
+// Extracted Card Component to handle individual image slider state
+const PropertyCard = ({ property }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const images = property.images || [];
+
+  const nextSlide = (e) => {
+    e.preventDefault(); // Prevents clicking the Link to the details page
+    if (images.length > 1) {
+      setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    }
+  };
+
+  const prevSlide = (e) => {
+    e.preventDefault(); // Prevents clicking the Link to the details page
+    if (images.length > 1) {
+      setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    }
+  };
+
+  return (
+    <Link
+      to={`/user/properties/${property._id}`}
+      className="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60 transition hover:border-indigo-500/50"
+    >
+      {/* Image Slider Container */}
+      <div className="group/slider relative flex h-44 items-center justify-center overflow-hidden bg-slate-800 text-slate-600">
+        {images.length > 0 ? (
+          <>
+            <div
+              className="flex h-full w-full transition-transform duration-500 ease-out"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
+              {images.map((img, i) => (
+                <img
+                  key={i}
+                  src={imageUrl(img)}
+                  alt={property.title}
+                  className="h-full w-full shrink-0 object-cover"
+                />
+              ))}
+            </div>
+
+            {/* Arrows & Dots (Only show if more than 1 image) */}
+            {images.length > 1 && (
+              <>
+                <button
+                  onClick={prevSlide}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/70 group-hover/slider:opacity-100"
+                >
+                  <FiChevronLeft size={16} />
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-black/40 p-1.5 text-white opacity-0 backdrop-blur-sm transition-all hover:bg-black/70 group-hover/slider:opacity-100"
+                >
+                  <FiChevronRight size={16} />
+                </button>
+
+                {/* Dots at bottom center */}
+                <div className="absolute bottom-2 left-1/2 flex -translate-x-1/2 gap-1.5">
+                  {images.map((_, i) => (
+                    <div
+                      key={i}
+                      className={`h-1.5 rounded-full transition-all ${
+                        currentIndex === i
+                          ? "w-3 bg-white"
+                          : "w-1.5 bg-white/50"
+                      }`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        ) : (
+          <FiHome size={36} />
+        )}
+      </div>
+
+      <div className="p-4">
+        <span className="rounded-full bg-indigo-500/10 px-2.5 py-1 text-[11px] font-medium text-indigo-400">
+          {property.categoryId?.categoryName || "Property"}
+        </span>
+
+        <h3 className="mt-3 font-semibold text-white group-hover:text-indigo-400">
+          {property.title}
+        </h3>
+
+        <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
+          <FiMapPin size={13} />
+          {property.location}
+        </p>
+
+        <div className="mt-3 flex items-center justify-between border-t border-slate-800 pt-3">
+          <p className="text-sm font-bold text-white">
+            ₹{property.price?.toLocaleString()}
+            <span className="text-xs font-normal text-slate-500">/mo</span>
+          </p>
+          <p className="text-xs text-slate-500">
+            {property.bedRooms} Bed • {property.bathRooms} Bath
+          </p>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
 const Properties = () => {
   const [properties, setProperties] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -28,7 +135,6 @@ const Properties = () => {
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
   const [requirement, setRequirement] = useState("");
   const [analyzing, setAnalyzing] = useState(false);
 
@@ -41,7 +147,6 @@ const Properties = () => {
         console.log(error.response?.data?.msg);
       }
     };
-
     fetchCategories();
   }, []);
 
@@ -49,14 +154,12 @@ const Properties = () => {
     const delay = setTimeout(() => {
       fetchProperties();
     }, 400);
-
     return () => clearTimeout(delay);
   }, [filters, page]);
 
   const fetchProperties = async () => {
     try {
       setLoading(true);
-
       const params = { page, limit: 6 };
       if (filters.search) params.search = filters.search;
       if (filters.categoryId) params.categoryId = filters.categoryId;
@@ -84,7 +187,6 @@ const Properties = () => {
       toast.error("Please describe what you are looking for");
       return;
     }
-
     try {
       setAnalyzing(true);
       const res = await api.post("/ai/analyse-requirement", { requirement });
@@ -135,7 +237,6 @@ const Properties = () => {
             <FiZap size={15} />
             Describe what you need, AI will set the filters
           </p>
-
           <div className="mt-3 flex flex-col gap-3 sm:flex-row">
             <input
               type="text"
@@ -212,50 +313,8 @@ const Properties = () => {
         ) : (
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {properties.map((property) => (
-              <Link
-                to={`/user/properties/${property._id}`}
-                key={property._id}
-                className="group overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/60 transition hover:border-indigo-500/50"
-              >
-                <div className="flex h-44 items-center justify-center overflow-hidden bg-slate-800 text-slate-600">
-                  {property.images?.[0] ? (
-                    <img
-                      src={imageUrl(property.images[0])}
-                      alt={property.title}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <FiHome size={36} />
-                  )}
-                </div>
-
-                <div className="p-4">
-                  <span className="rounded-full bg-indigo-500/10 px-2.5 py-1 text-[11px] font-medium text-indigo-400">
-                    {property.categoryId?.categoryName || "Property"}
-                  </span>
-
-                  <h3 className="mt-3 font-semibold text-white group-hover:text-indigo-400">
-                    {property.title}
-                  </h3>
-
-                  <p className="mt-1 flex items-center gap-1.5 text-xs text-slate-500">
-                    <FiMapPin size={13} />
-                    {property.location}
-                  </p>
-
-                  <div className="mt-3 flex items-center justify-between border-t border-slate-800 pt-3">
-                    <p className="text-sm font-bold text-white">
-                      ₹{property.price.toLocaleString()}
-                      <span className="text-xs font-normal text-slate-500">
-                        /mo
-                      </span>
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      {property.bedRooms} Bed • {property.bathRooms} Bath
-                    </p>
-                  </div>
-                </div>
-              </Link>
+              /* Render the newly created component here */
+              <PropertyCard key={property._id} property={property} />
             ))}
           </div>
         )}
@@ -270,11 +329,9 @@ const Properties = () => {
             >
               <FiChevronLeft size={16} />
             </button>
-
             <span className="text-sm text-slate-400">
               Page {page} of {totalPages}
             </span>
-
             <button
               disabled={page === totalPages}
               onClick={() => setPage((p) => p + 1)}

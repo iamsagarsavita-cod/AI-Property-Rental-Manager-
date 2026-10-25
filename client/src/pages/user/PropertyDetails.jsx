@@ -5,6 +5,8 @@ import {
   FiPhone,
   FiMail,
   FiZap,
+  FiChevronLeft,
+  FiChevronRight,
 } from "react-icons/fi";
 
 import { useParams } from "react-router-dom";
@@ -23,6 +25,9 @@ const PropertyDetails = () => {
 
   const [summary, setSummary] = useState("");
   const [summarizing, setSummarizing] = useState(false);
+
+  // New State for Carousel
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     fetchProperty();
@@ -55,23 +60,34 @@ const PropertyDetails = () => {
   const sendRequest = async () => {
     try {
       setSending(true);
-
-      const requestData = {
-        propertyId: id,
-      };
-
+      const requestData = { propertyId: id };
       if (message.trim()) {
         requestData.message = message.trim();
       }
-
       const res = await api.post("/rental-requests/send-request", requestData);
-
       toast.success(res.data.msg || "Rental Request Sent Successfully");
       setMessage("");
     } catch (error) {
       toast.error(error.response?.data?.msg || "Failed to send request");
     } finally {
       setSending(false);
+    }
+  };
+
+  // Slider controls
+  const nextImage = () => {
+    if (property?.images) {
+      setCurrentImageIndex((prev) =>
+        prev === property.images.length - 1 ? 0 : prev + 1
+      );
+    }
+  };
+
+  const prevImage = () => {
+    if (property?.images) {
+      setCurrentImageIndex((prev) =>
+        prev === 0 ? property.images.length - 1 : prev - 1
+      );
     }
   };
 
@@ -93,14 +109,61 @@ const PropertyDetails = () => {
       <Navbar />
 
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Image */}
-        <div className="flex h-72 items-center justify-center overflow-hidden rounded-2xl bg-slate-800 text-slate-600 sm:h-96">
-          {property.images?.[0] ? (
-            <img
-              src={imageUrl(property.images[0])}
-              alt={property.title}
-              className="h-full w-full object-cover"
-            />
+        {/* Full Image Slider */}
+        <div className="group relative flex h-72 items-center justify-center overflow-hidden rounded-2xl bg-slate-800 text-slate-600 sm:h-96">
+          {property.images && property.images.length > 0 ? (
+            <>
+              {/* Image Track */}
+              <div
+                className="flex h-full w-full transition-transform duration-500 ease-out"
+                style={{
+                  transform: `translateX(-${currentImageIndex * 100}%)`,
+                }}
+              >
+                {property.images.map((img, index) => (
+                  <img
+                    key={index}
+                    src={imageUrl(img)}
+                    alt={`${property.title} - ${index + 1}`}
+                    className="h-full w-full shrink-0 object-cover"
+                  />
+                ))}
+              </div>
+
+              {/* Slider Controls (Only if multiple images exist) */}
+              {property.images.length > 1 && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-all hover:bg-black/70"
+                  >
+                    <FiChevronLeft size={20} />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 text-white backdrop-blur-md transition-all hover:bg-black/70"
+                  >
+                    <FiChevronRight size={20} />
+                  </button>
+
+                  {/* Pagination Dots at Center Downside */}
+                  <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-2">
+                    {property.images.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCurrentImageIndex(i)}
+                        className={`h-2 rounded-full transition-all ${
+                          currentImageIndex === i
+                            ? "w-6 bg-white"
+                            : "w-2 bg-white/50 hover:bg-white/80"
+                        }`}
+                        aria-label={`Go to slide ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </>
           ) : (
             <FiHome size={48} />
           )}
@@ -157,7 +220,6 @@ const PropertyDetails = () => {
                   {summarizing ? "Generating..." : "Generate"}
                 </button>
               </div>
-
               {summary && (
                 <p className="mt-2 text-sm text-slate-400">{summary}</p>
               )}
@@ -167,7 +229,7 @@ const PropertyDetails = () => {
           {/* Right: Owner card + Request button */}
           <div className="h-fit rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
             <p className="text-2xl font-bold">
-              ₹{property.price.toLocaleString()}
+              ₹{property.price?.toLocaleString()}
               <span className="text-sm font-normal text-slate-500">/month</span>
             </p>
 
