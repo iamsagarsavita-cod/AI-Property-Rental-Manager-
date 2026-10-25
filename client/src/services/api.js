@@ -17,7 +17,10 @@ api.interceptors.request.use(
   },
 );
 
-export const imageUrl = (filename) =>
-  filename ? `${api.defaults.baseURL}/uploads/${filename}` : "";
+export const imageUrl = (filename) => {
+  if (!filename) return "";
+  const baseUrl = (api.defaults.baseURL || "").replace(/\/+$/, "");
+  return `${baseUrl}/uploads/${filename.replace(/^\/+/, "")}`;
+};
 
 export default api;
