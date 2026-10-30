@@ -97,7 +97,7 @@ const Recommended = () => {
                         /mo
                       </span>
                     </p>
-                    <p className="text-xs text-[#918276]">
+                    <p className="text-xs text-[#837468]">
                       {property.bedRooms} Bed • {property.bathRooms} Bath
                     </p>
                   </div>
