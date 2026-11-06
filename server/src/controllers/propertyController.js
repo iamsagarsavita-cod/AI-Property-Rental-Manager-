@@ -2,6 +2,7 @@ const PropertyModel = require("../models/PropertyModel");
 const CategoryModel = require("../models/categoryModel");
 
 const { isValid, isValidObjectId } = require("../utils/validator");
+const { uploadImage, deleteStoredImage } = require("../utils/imageStorage");
 
 // Add Property (Owner)
 const addProperty = async (req, res) => {
@@ -106,7 +107,9 @@ const addProperty = async (req, res) => {
 
     // Images
     if (req.files && req.files.length > 0) {
-      propertyData.images = req.files.map((file) => file.filename);
+      propertyData.images = await Promise.all(
+        req.files.map((file) => uploadImage(file)),
+      );
     }
 
     let propertyAdded = await PropertyModel.create(propertyData);
@@ -244,17 +247,71 @@ const updateProperty = async (req, res) => {
       }
     }
 
-    if (req.files && req.files.length > 0) {
-      const newImages = req.files.map((file) => file.filename);
+    let retainedImages = property.images || [];
+    if (Object.prototype.hasOwnProperty.call(req.body, "existingImages")) {
+      try {
+        retainedImages = JSON.parse(req.body.existingImages);
+      } catch {
+        return res.status(400).json({ msg: "Invalid existing images list" });
+      }
 
-      propertyData.images = [...(property.images || []), ...newImages];
+      const currentImages = new Set(property.images || []);
+      if (
+        !Array.isArray(retainedImages) ||
+        retainedImages.some(
+          (image) => typeof image !== "string" || !currentImages.has(image),
+        )
+      ) {
+        return res.status(400).json({ msg: "Invalid existing images list" });
+      }
     }
+
+    const newImages = req.files?.length
+      ? await Promise.all(
+          req.files.map((file) =>
+            uploadImage(file),
+          ),
+        )
+      : [];
+
+    if (retainedImages.length + newImages.length > 5) {
+      return res
+        .status(400)
+        .json({ msg: "You can upload a maximum of 5 images" });
+    }
+
+    if (
+      Object.prototype.hasOwnProperty.call(req.body, "existingImages") ||
+      newImages.length > 0
+    ) {
+      propertyData.images = [...retainedImages, ...newImages];
+    }
+    delete propertyData.existingImages;
 
     let updatedPropertyData = await PropertyModel.findByIdAndUpdate(
       propertyId,
       propertyData,
       { new: true },
     ).populate("categoryId");
+
+    const removedImages = (property.images || []).filter(
+      (image) => !updatedPropertyData.images.includes(image),
+    );
+    await Promise.all(
+      removedImages.map(async (image) => {
+        const stillUsed = await PropertyModel.exists({
+          _id: { $ne: propertyId },
+          images: image,
+        });
+        if (stillUsed) return;
+
+        try {
+          await deleteStoredImage(image);
+        } catch (error) {
+          console.error("Failed to delete removed property image:", error);
+        }
+      }),
+    );
 
     return res
       .status(200)

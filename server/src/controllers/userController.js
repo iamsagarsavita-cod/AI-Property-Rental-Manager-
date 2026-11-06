@@ -1,6 +1,7 @@
 const UserModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { uploadImage } = require("../utils/imageStorage");
 
 const {
   isValid,
@@ -90,7 +91,7 @@ const signup = async (req, res) => {
 
     // Profile Image
     if (req.file) {
-      userData.profileImage = req.file.filename;
+      userData.profileImage = await uploadImage(req.file);
     }
 
     const user = await UserModel.create(userData);
@@ -255,7 +256,7 @@ const updateProfile = async (req, res) => {
 
     // Profile Image
     if (req.file) {
-      userData.profileImage = req.file.filename;
+      userData.profileImage = await uploadImage(req.file);
     }
 
     let updatedUserProfile = await UserModel.findByIdAndUpdate(

@@ -1,21 +1,8 @@
 const multer = require("multer");
-const path = require("path");
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads"));
-  },
-
-  filename: (req, file, cb) => {
-    const uniqueName =
-      Date.now() +
-      "-" +
-      Math.round(Math.random() * 1e9) +
-      path.extname(file.originalname);
-
-    cb(null, uniqueName);
-  },
-});
+// Keep incoming files in memory until validation completes. The upload helper
+// sends them to durable cloud storage when configured, or writes them locally
+// for development.
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   let allowedFiles = ["image/png", "image/jpg", "image/jpeg", "image/webp"];
