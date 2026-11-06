@@ -19,6 +19,7 @@ api.interceptors.request.use(
 
 export const imageUrl = (filename) => {
   if (!filename) return "";
+  if (/^https?:\/\//i.test(filename)) return filename;
   const baseUrl = (api.defaults.baseURL || "").replace(/\/+$/, "");
   return `${baseUrl}/uploads/${filename.replace(/^\/+/, "")}`;
 };

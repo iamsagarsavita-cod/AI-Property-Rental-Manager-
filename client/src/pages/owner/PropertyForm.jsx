@@ -82,6 +82,10 @@ const PropertyForm = () => {
     setNewImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const removeExistingImage = (index) => {
+    setExistingImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const generateDescription = async () => {
     const { title, location, bedRooms, bathRooms, area, price, categoryId } =
       formData;
@@ -140,6 +144,9 @@ const PropertyForm = () => {
       Object.entries(formData).forEach(([key, value]) => {
         data.append(key, value);
       });
+      if (isEditMode) {
+        data.append("existingImages", JSON.stringify(existingImages));
+      }
       newImages.forEach((file) => data.append("images", file));
 
       let res;
@@ -344,14 +351,23 @@ const PropertyForm = () => {
               <div className="mt-3 flex flex-wrap gap-2">
                 {existingImages.map((img, i) => (
                   <div
-                    key={`existing-${i}`}
-                    className="h-16 w-16 overflow-hidden rounded-lg bg-[#f3ede5]"
+                    key={`existing-${img}-${i}`}
+                    className="relative h-16 w-16 overflow-hidden rounded-lg bg-[#f3ede5]"
                   >
                     <img
                       src={imageUrl(img)}
                       alt="Existing"
                       className="h-full w-full object-cover"
                     />
+                    <button
+                      type="button"
+                      onClick={() => removeExistingImage(i)}
+                      aria-label={`Remove existing image ${i + 1}`}
+                      title="Remove image"
+                      className="absolute right-1 top-1 rounded-full bg-black/70 p-1 text-white shadow transition hover:bg-red-600"
+                    >
+                      <FiX size={12} />
+                    </button>
                   </div>
                 ))}
 
