@@ -127,7 +127,7 @@ const PropertyForm = () => {
       toast.success("Description generated");
     } catch (error) {
       toast.error(
-        error.response?.data?.msg || "Failed to generate description",
+        error.response?.data?.msg || "Failed to generate description please try again",
       );
     } finally {
       setGenerating(false);
