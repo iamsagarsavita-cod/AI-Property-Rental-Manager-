@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FiHome,
   FiSearch,
@@ -9,12 +9,14 @@ import {
   FiUsers,
   FiGrid,
   FiBarChart2,
+  FiFlag,
   FiLogOut,
   FiMenu,
   FiUser,
   FiX,
 } from "react-icons/fi";
 import { toast } from "react-toastify";
+import api, { imageUrl } from "../services/api";
 
 const navLinksByRole = {
   user: [
@@ -34,6 +36,7 @@ const navLinksByRole = {
     { name: "Categories", path: "/admin/categories", icon: FiGrid },
     { name: "Properties", path: "/admin/properties", icon: FiHome },
     { name: "Analytics", path: "/admin/analytics", icon: FiBarChart2 },
+    { name: "Reports", path: "/admin/reports", icon: FiFlag },
   ],
 };
 
@@ -42,12 +45,47 @@ const Navbar = () => {
 
   const role = localStorage.getItem("role") || "user";
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState(
+    () => localStorage.getItem("profileImage") || "",
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const syncCachedImage = () => {
+      setProfileImage(localStorage.getItem("profileImage") || "");
+    };
+
+    window.addEventListener("profile-image-updated", syncCachedImage);
+
+    api
+      .get("/users/my-profile")
+      .then((res) => {
+        if (!isMounted) return;
+        const image = res.data.user?.profileImage || "";
+        setProfileImage(image);
+        if (image) localStorage.setItem("profileImage", image);
+        else localStorage.removeItem("profileImage");
+      })
+      .catch(() => {});
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener("profile-image-updated", syncCachedImage);
+    };
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
+    localStorage.removeItem("profileImage");
     toast.success("Logged out successfully");
     navigate("/login");
+  };
+
+  const handleProfileImageError = () => {
+    setProfileImage("");
+    localStorage.removeItem("profileImage");
   };
 
   const navLinks = navLinksByRole[role] || [];
@@ -111,8 +149,17 @@ const Navbar = () => {
             className="hidden items-center gap-2 rounded-xl border border-[#e9dfd4] bg-[#fffdfa] px-3 py-2 md:flex"
             onClick={() => navigate(profilePath)}
           >
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#a96343] text-xs font-bold">
-              <FiUser size={14} />
+            <div className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg bg-[#a96343] text-xs font-bold text-white">
+              {profileImage ? (
+                <img
+                  src={imageUrl(profileImage)}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  onError={handleProfileImageError}
+                />
+              ) : (
+                <FiUser size={14} />
+              )}
             </div>
             <span className="text-sm font-medium text-[#51463d]">Profile</span>
           </button>
@@ -166,7 +213,18 @@ const Navbar = () => {
               }}
               className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-[#6d5e52] transition hover:bg-[#fffdfa] hover:text-[#382f28]"
             >
-              <FiUser size={18} />
+              <span className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-full bg-[#a96343] text-white">
+                {profileImage ? (
+                  <img
+                    src={imageUrl(profileImage)}
+                    alt=""
+                    className="h-full w-full object-cover"
+                    onError={handleProfileImageError}
+                  />
+                ) : (
+                  <FiUser size={16} />
+                )}
+              </span>
               Profile
             </button>
 

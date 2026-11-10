@@ -96,11 +96,22 @@ const MyProperties = () => {
                 />
 
                 <div className="p-4">
-                  <span
-                    className={`rounded-full px-2.5 py-1 text-[11px] font-medium capitalize ${statusStyles[property.status]}`}
-                  >
-                    {property.status}
-                  </span>
+                  <div className="flex flex-wrap gap-2">
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-[11px] font-medium capitalize ${statusStyles[property.status]}`}
+                    >
+                      {property.status}
+                    </span>
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                        property.isVerified
+                          ? "bg-emerald-100 text-emerald-800"
+                          : "bg-amber-100 text-amber-800"
+                      }`}
+                    >
+                      {property.isVerified ? "Published" : "Pending admin review"}
+                    </span>
+                  </div>
 
                   <h3 className="mt-3 font-semibold">{property.title}</h3>
 

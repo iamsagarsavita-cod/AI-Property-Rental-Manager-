@@ -23,6 +23,7 @@ import AdminUsers from "./pages/admin/Users";
 import AdminProperties from "./pages/admin/Properties";
 import Analytics from "./pages/admin/Analytics";
 import AdminCategories from "./pages/admin/Categories";
+import AdminReports from "./pages/admin/Reports";
 
 import Profile from "./pages/shared/Profile";
 
@@ -66,6 +67,7 @@ const App = () => {
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/properties" element={<AdminProperties />} />
             <Route path="/admin/analytics" element={<Analytics />} />
+            <Route path="/admin/reports" element={<AdminReports />} />
             <Route path="/admin/categories" element={<AdminCategories />} />
 
             <Route path="/admin/profile" element={<Profile />} />

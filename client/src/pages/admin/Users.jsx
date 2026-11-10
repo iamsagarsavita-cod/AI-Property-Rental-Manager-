@@ -1,4 +1,4 @@
-import { FiUser, FiTrash2 } from "react-icons/fi";
+import { FiUser, FiTrash2, FiShield, FiShieldOff } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import api, { imageUrl } from "../../services/api";
@@ -17,6 +17,7 @@ const Users = () => {
   const [loading, setLoading] = useState(true);
 
   const [activeTab, setActiveTab] = useState("all");
+  const [verificationUpdating, setVerificationUpdating] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -51,6 +52,26 @@ const Users = () => {
       setUsers((prev) => prev.filter((u) => u._id !== id));
     } catch (error) {
       toast.error(error.response?.data?.msg || "Failed to delete user");
+    }
+  };
+
+  const toggleOwnerVerification = async (owner) => {
+    try {
+      setVerificationUpdating(owner._id);
+      const isVerified = !owner.isVerified;
+      const res = await api.patch(`/admin/owners/${owner._id}/verification`, {
+        isVerified,
+      });
+      setUsers((current) =>
+        current.map((user) =>
+          user._id === owner._id ? { ...user, isVerified } : user,
+        ),
+      );
+      toast.success(res.data.msg);
+    } catch (error) {
+      toast.error(error.response?.data?.msg || "Could not update owner status");
+    } finally {
+      setVerificationUpdating(null);
     }
   };
 
@@ -133,8 +154,37 @@ const Users = () => {
                       >
                         {user.role}
                       </span>
+                      {user.role === "owner" && (
+                        <span
+                          className={`mt-1 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                            user.isVerified
+                              ? "bg-emerald-100 text-emerald-800"
+                              : "bg-amber-100 text-amber-800"
+                          }`}
+                        >
+                          {user.isVerified ? "Verified owner" : "Needs verification"}
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-right">
+                      {user.role === "owner" && (
+                        <button
+                          disabled={verificationUpdating === user._id}
+                          onClick={() => toggleOwnerVerification(user)}
+                          className="mb-1 mr-2 inline-flex items-center gap-1.5 rounded-lg border border-[#e9dfd4] px-3 py-1.5 text-xs font-medium text-[#6d5e52] transition hover:border-[#c89071] disabled:opacity-50"
+                        >
+                          {user.isVerified ? (
+                            <FiShieldOff size={13} />
+                          ) : (
+                            <FiShield size={13} />
+                          )}
+                          {verificationUpdating === user._id
+                            ? "Saving..."
+                            : user.isVerified
+                              ? "Unverify"
+                              : "Verify owner"}
+                        </button>
+                      )}
                       {user.role !== "admin" && (
                         <button
                           onClick={() => deleteUser(user._id)}

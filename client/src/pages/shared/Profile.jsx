@@ -49,6 +49,9 @@ const Profile = () => {
       });
       setRole(user.role);
       setExistingImage(user.profileImage);
+      if (user.profileImage) {
+        localStorage.setItem("profileImage", user.profileImage);
+      } else localStorage.removeItem("profileImage");
     } catch (error) {
       toast.error(error.response?.data?.msg || "Failed to load profile");
     } finally {
@@ -98,7 +101,12 @@ const Profile = () => {
       toast.success(res.data.msg || "Profile Updated Successfully");
 
       setFormData((prev) => ({ ...prev, password: "" }));
-      setExistingImage(res.data.updatedUserProfile.profileImage);
+      const updatedImage = res.data.updatedUserProfile.profileImage || "";
+      setExistingImage(updatedImage);
+      if (updatedImage) localStorage.setItem("profileImage", updatedImage);
+      else localStorage.removeItem("profileImage");
+
+      window.dispatchEvent(new Event("profile-image-updated"));
       setNewImage(null);
       setPreview(null);
     } catch (error) {

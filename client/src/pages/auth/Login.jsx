@@ -42,6 +42,7 @@ const Login = () => {
 
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("role", role);
+      localStorage.removeItem("profileImage");
 
       toast.success(response.data.msg || "Login Successfull");
 

@@ -4,6 +4,9 @@ import {
   FiPhone,
   FiMail,
   FiZap,
+  FiFlag,
+  FiX,
+  FiShield,
 } from "react-icons/fi";
 
 import { useParams } from "react-router-dom";
@@ -20,6 +23,10 @@ const PropertyDetails = () => {
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
+  const [showReportForm, setShowReportForm] = useState(false);
+  const [reportReason, setReportReason] = useState("misleading_listing");
+  const [reportMessage, setReportMessage] = useState("");
+  const [reporting, setReporting] = useState(false);
 
   const [summary, setSummary] = useState("");
   const [summarizing, setSummarizing] = useState(false);
@@ -66,6 +73,24 @@ const PropertyDetails = () => {
       toast.error(error.response?.data?.msg || "Failed to send request");
     } finally {
       setSending(false);
+    }
+  };
+
+  const submitReport = async (e) => {
+    e.preventDefault();
+    try {
+      setReporting(true);
+      const res = await api.post(`/reports/properties/${id}`, {
+        reason: reportReason,
+        message: reportMessage.trim(),
+      });
+      toast.success(res.data.msg || "Report submitted");
+      setReportMessage("");
+      setShowReportForm(false);
+    } catch (error) {
+      toast.error(error.response?.data?.msg || "Failed to submit report");
+    } finally {
+      setReporting(false);
     }
   };
 
@@ -173,6 +198,11 @@ const PropertyDetails = () => {
                     {property.ownerId?.fullName}
                   </p>
                   <p className="text-xs text-[#837468]">Property Owner</p>
+                  {property.ownerId?.isVerified && (
+                    <p className="mt-1 flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+                      <FiShield size={11} /> Verified owner
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -209,6 +239,59 @@ const PropertyDetails = () => {
                 This property is currently {property.status}
               </p>
             )}
+
+            <div className="mt-4 border-t border-[#e9dfd4] pt-4">
+              {!showReportForm ? (
+                <button
+                  type="button"
+                  onClick={() => setShowReportForm(true)}
+                  className="inline-flex items-center gap-2 text-xs font-medium text-[#837468] transition hover:text-[#a96343]"
+                >
+                  <FiFlag size={13} /> Report this listing
+                </button>
+              ) : (
+                <form onSubmit={submitReport} className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold">Report this listing</p>
+                    <button
+                      type="button"
+                      onClick={() => setShowReportForm(false)}
+                      aria-label="Close report form"
+                      className="rounded-full p-1 text-[#837468] hover:bg-[#f3ede5]"
+                    >
+                      <FiX size={15} />
+                    </button>
+                  </div>
+                  <select
+                    value={reportReason}
+                    onChange={(e) => setReportReason(e.target.value)}
+                    className="w-full rounded-lg border border-[#e9dfd4] bg-[#f7f3ed] px-3 py-2 text-xs outline-none focus:border-[#a96343]"
+                  >
+                    <option value="misleading_listing">Misleading listing</option>
+                    <option value="incorrect_price">Incorrect price</option>
+                    <option value="duplicate_listing">Duplicate listing</option>
+                    <option value="scam_or_suspicious">Scam or suspicious</option>
+                    <option value="inappropriate_content">Inappropriate content</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <textarea
+                    rows="3"
+                    maxLength={500}
+                    value={reportMessage}
+                    onChange={(e) => setReportMessage(e.target.value)}
+                    placeholder="Add details for the admin (optional)"
+                    className="w-full resize-none rounded-lg border border-[#e9dfd4] bg-[#f7f3ed] px-3 py-2 text-xs outline-none placeholder:text-[#9b8b7d] focus:border-[#a96343]"
+                  />
+                  <button
+                    type="submit"
+                    disabled={reporting}
+                    className="w-full rounded-lg bg-[#382f28] py-2.5 text-xs font-semibold text-white transition hover:bg-[#51463d] disabled:opacity-60"
+                  >
+                    {reporting ? "Submitting..." : "Send report"}
+                  </button>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { FiMapPin, FiUser } from "react-icons/fi";
+import { FiMapPin, FiUser, FiShield, FiShieldOff } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import api from "../../services/api";
@@ -17,10 +17,12 @@ const Properties = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("all");
+  const [verificationFilter, setVerificationFilter] = useState("all");
+  const [verificationUpdating, setVerificationUpdating] = useState(null);
 
   useEffect(() => {
     fetchProperties();
-  }, [activeTab]);
+  }, [activeTab, verificationFilter]);
 
   const fetchProperties = async () => {
     try {
@@ -28,6 +30,9 @@ const Properties = () => {
 
       const params = {};
       if (activeTab !== "all") params.status = activeTab;
+      if (verificationFilter !== "all") {
+        params.verification = verificationFilter;
+      }
 
       const res = await api.get("/admin/all-properties", { params });
       setProperties(res.data.properties || []);
@@ -38,6 +43,27 @@ const Properties = () => {
       setProperties([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const togglePropertyVerification = async (property) => {
+    try {
+      setVerificationUpdating(property._id);
+      const isVerified = !property.isVerified;
+      const res = await api.patch(
+        `/admin/properties/${property._id}/verification`,
+        { isVerified },
+      );
+      setProperties((current) =>
+        current.map((item) =>
+          item._id === property._id ? { ...item, isVerified } : item,
+        ),
+      );
+      toast.success(res.data.msg);
+    } catch (error) {
+      toast.error(error.response?.data?.msg || "Could not update listing status");
+    } finally {
+      setVerificationUpdating(null);
     }
   };
 
@@ -63,6 +89,26 @@ const Properties = () => {
               }`}
             >
               {tab}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-3 flex flex-wrap gap-2">
+          {[
+            ["all", "All review states"],
+            ["pending", "Needs review"],
+            ["verified", "Published"],
+          ].map(([value, label]) => (
+            <button
+              key={value}
+              onClick={() => setVerificationFilter(value)}
+              className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                verificationFilter === value
+                  ? "bg-[#382f28] text-white"
+                  : "border border-[#e9dfd4] bg-white text-[#6d5e52] hover:border-[#c89071]"
+              }`}
+            >
+              {label}
             </button>
           ))}
         </div>
@@ -100,6 +146,30 @@ const Properties = () => {
                     >
                       {p.status}
                     </span>
+                  </div>
+
+                  <div className="mt-3 flex items-center justify-between gap-3">
+                    <span
+                      className={`rounded-full px-2.5 py-1 text-[11px] font-medium ${
+                        p.isVerified
+                          ? "bg-emerald-100 text-emerald-800"
+                          : "bg-amber-100 text-amber-800"
+                      }`}
+                    >
+                      {p.isVerified ? "Published" : "Needs review"}
+                    </span>
+                    <button
+                      disabled={verificationUpdating === p._id}
+                      onClick={() => togglePropertyVerification(p)}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-[#e9dfd4] px-2.5 py-1.5 text-xs font-medium text-[#6d5e52] transition hover:border-[#c89071] disabled:opacity-50"
+                    >
+                      {p.isVerified ? <FiShieldOff size={13} /> : <FiShield size={13} />}
+                      {verificationUpdating === p._id
+                        ? "Saving..."
+                        : p.isVerified
+                          ? "Unpublish"
+                          : "Approve listing"}
+                    </button>
                   </div>
 
                   <h3 className="mt-3 font-semibold">{p.title}</h3>

@@ -7,6 +7,9 @@ import {
   FiPlus,
   FiGrid,
   FiUser,
+  FiTrendingUp,
+  FiPercent,
+  FiShield,
 } from "react-icons/fi";
 import { useState, useEffect } from "react";
 import api from "../../services/api";
@@ -14,6 +17,7 @@ import Navbar from "../../components/Navbar";
 
 const OwnerDashboard = () => {
   const [name, setName] = useState("");
+  const [ownerVerified, setOwnerVerified] = useState(true);
   const [properties, setProperties] = useState([]);
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +37,7 @@ const OwnerDashboard = () => {
 
     if (profileRes.status === "fulfilled") {
       setName(profileRes.value.data.user?.fullName || "");
+      setOwnerVerified(profileRes.value.data.user?.isVerified !== false);
     }
     if (propertiesRes.status === "fulfilled") {
       setProperties(propertiesRes.value.data.properties || []);
@@ -44,6 +49,18 @@ const OwnerDashboard = () => {
     setLoading(false);
   };
   const pendingRequests = requests.filter((r) => r.status === "pending");
+  const rentedProperties = properties.filter((p) => p.status === "rented");
+  const rentableProperties = properties.filter((p) => p.status !== "inactive");
+  const occupancyRate = rentableProperties.length
+    ? Math.round((rentedProperties.length / rentableProperties.length) * 100)
+    : 0;
+  const rentedMonthlyValue = rentedProperties.reduce(
+    (sum, property) => sum + Number(property.price || 0),
+    0,
+  );
+  const pendingReviewProperties = properties.filter(
+    (property) => property.isVerified === false,
+  ).length;
 
   const stats = [
     { label: "My Properties", value: properties.length, Icon: FiHome },
@@ -58,6 +75,22 @@ const OwnerDashboard = () => {
       Icon: FiKey,
     },
     { label: "Pending Requests", value: pendingRequests.length, Icon: FiInbox },
+    {
+      label: "Rented Monthly Value",
+      value: `₹${rentedMonthlyValue.toLocaleString("en-IN")}`,
+      Icon: FiTrendingUp,
+    },
+    { label: "Occupancy Rate", value: `${occupancyRate}%`, Icon: FiPercent },
+    {
+      label: "Awaiting Admin Review",
+      value: pendingReviewProperties,
+      Icon: FiShield,
+    },
+    {
+      label: "Owner Verification",
+      value: ownerVerified ? "Verified" : "Pending",
+      Icon: FiShield,
+    },
   ];
 
   return (
@@ -79,7 +112,7 @@ const OwnerDashboard = () => {
         ) : (
           <>
             {/* Stat cards */}
-            <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+            <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-4 xl:grid-cols-4">
               {stats.map(({ label, value, Icon }) => (
                 <div
                   key={label}
