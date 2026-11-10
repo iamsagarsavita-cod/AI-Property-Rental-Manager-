@@ -32,6 +32,10 @@ const sendRentalRequest = async (req, res) => {
         .json({ msg: "This Property is not available for rent." });
     }
 
+    if (!property.isVerified) {
+      return res.status(404).json({ msg: "Property Not Found" });
+    }
+
     if (property.ownerId.toString() === req.userId.toString()) {
       return res.status(400).json({
         msg: "You Cannot send a rental request for your own property.",

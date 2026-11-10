@@ -1,7 +1,7 @@
 const UserModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { uploadImage } = require("../utils/imageStorage");
+const { uploadImage, deleteStoredImage } = require("../utils/imageStorage");
 
 const {
   isValid,
@@ -94,6 +94,8 @@ const signup = async (req, res) => {
       userData.profileImage = await uploadImage(req.file);
     }
 
+    userData.isVerified = userData.role === "owner" ? false : true;
+
     const user = await UserModel.create(userData);
 
     return res.status(201).json({ msg: "Signup Successfull", user });
@@ -179,6 +181,13 @@ const updateProfile = async (req, res) => {
   try {
     let userId = req.userId;
     let userData = req.body;
+    delete userData.role;
+    delete userData.isVerified;
+    const currentUser = await UserModel.findById(userId).select("profileImage");
+
+    if (!currentUser) {
+      return res.status(404).json({ msg: "User Not Found" });
+    }
 
     if (!userData || Object.keys(userData).length === 0) {
       return res
@@ -262,8 +271,27 @@ const updateProfile = async (req, res) => {
     let updatedUserProfile = await UserModel.findByIdAndUpdate(
       userId,
       userData,
-      { new: true },
+      { returnDocument: "after" },
     ).select("-password");
+
+    if (
+      req.file &&
+      currentUser.profileImage &&
+      currentUser.profileImage !== updatedUserProfile.profileImage
+    ) {
+      const imageStillInUse = await UserModel.exists({
+        _id: { $ne: userId },
+        profileImage: currentUser.profileImage,
+      });
+
+      if (!imageStillInUse) {
+        try {
+          await deleteStoredImage(currentUser.profileImage);
+        } catch (error) {
+          console.error("Failed to delete old profile image:", error);
+        }
+      }
+    }
 
     return res
       .status(200)

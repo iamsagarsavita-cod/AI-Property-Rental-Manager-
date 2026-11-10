@@ -15,6 +15,7 @@ const propertyRoute = require("./routes/propertyRoute");
 const rentalReqRoute = require("./routes/rentalReqRoute");
 const aiRoute = require("./routes/aiRoutes");
 const adminRoute = require("./routes/adminRoute");
+const reportRoute = require("./routes/reportRoute");
 const { serveStoredImage } = require("./utils/imageStorage");
 
 const app = express();
@@ -29,6 +30,7 @@ app.use("/properties", propertyRoute);
 app.use("/rental-requests", rentalReqRoute);
 app.use("/ai", aiRoute);
 app.use("/admin", adminRoute);
+app.use("/reports", reportRoute);
 
 app.get("/uploads/:imageId", serveStoredImage);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

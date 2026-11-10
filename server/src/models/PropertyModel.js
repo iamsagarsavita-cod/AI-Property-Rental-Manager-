@@ -44,6 +44,10 @@ const propertySchema = new mongoose.Schema(
       required: true,
     },
     images: [{ type: String }],
+    isVerified: {
+      type: Boolean,
+      default: true,
+    },
     status: {
       type: String,
       enum: ["available", "rented", "inactive"],

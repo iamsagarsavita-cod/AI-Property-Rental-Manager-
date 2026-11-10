@@ -155,7 +155,7 @@ const updateCategory = async (req, res) => {
     let updatedCategory = await CategoryModel.findByIdAndUpdate(
       categoryId,
       categoryData,
-      { new: true },
+      { returnDocument: "after" },
     );
 
     if (!updatedCategory) {

@@ -8,6 +8,7 @@ const { uploadImage, deleteStoredImage } = require("../utils/imageStorage");
 const addProperty = async (req, res) => {
   try {
     let propertyData = req.body;
+    delete propertyData.isVerified;
 
     if (!propertyData || Object.keys(propertyData).length === 0) {
       return res.status(400).json({ msg: "Bad Request ! No Data Provided" });
@@ -104,6 +105,7 @@ const addProperty = async (req, res) => {
     }
 
     propertyData.ownerId = req.userId;
+    propertyData.isVerified = false;
 
     // Images
     if (req.files && req.files.length > 0) {
@@ -144,6 +146,7 @@ const updateProperty = async (req, res) => {
     }
 
     let propertyData = req.body;
+    delete propertyData.isVerified;
 
     if (!propertyData || Object.keys(propertyData).length === 0) {
       return res
@@ -291,7 +294,7 @@ const updateProperty = async (req, res) => {
     let updatedPropertyData = await PropertyModel.findByIdAndUpdate(
       propertyId,
       propertyData,
-      { new: true },
+      { returnDocument: "after" },
     ).populate("categoryId");
 
     const removedImages = (property.images || []).filter(
@@ -397,6 +400,7 @@ const getAllProperty = async (req, res) => {
     }
 
     let filter = {};
+    filter.isVerified = { $ne: false };
 
     // Search By Title or Location
     if (search) {
@@ -492,6 +496,14 @@ const getPropertyById = async (req, res) => {
       .populate("ownerId", "-password");
 
     if (!property) {
+      return res.status(404).json({ msg: "Property Not Found" });
+    }
+
+    if (
+      !property.isVerified &&
+      req.role !== "admin" &&
+      property.ownerId?._id?.toString() !== req.userId.toString()
+    ) {
       return res.status(404).json({ msg: "Property Not Found" });
     }
     return res.status(200).json({ msg: "Property Data Fetched", property });
